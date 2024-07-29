@@ -18,6 +18,7 @@ import com.google.android.gms.tasks.CancellationToken
 import com.google.android.gms.tasks.CancellationTokenSource
 import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.android.material.snackbar.Snackbar
+import com.rurouni.weatherapp.ApiKey
 import com.rurouni.weatherapp.adapter.ForecastListAdapter
 import com.rurouni.weatherapp.databinding.ActivityMainBinding
 import com.rurouni.weatherapp.service.WeatherApi
@@ -30,7 +31,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val BASE_URL = "https://api.weatherapi.com/v1/"
-val KEY = "17abb3d06fd24ea4a2c111142242907"
 val DAYS = "30"
 
 class MainActivity : AppCompatActivity() {
@@ -139,7 +139,7 @@ class MainActivity : AppCompatActivity() {
                             }
                             else {
                                 CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
-                                    val response = weatherApi.getForecast(KEY, "${it.latitude},${it.longitude}", DAYS)
+                                    val response = weatherApi.getForecast(ApiKey().KEY, "${it.latitude},${it.longitude}", DAYS)
 
                                     withContext(Dispatchers.Main) {
                                         if (response.isSuccessful) {
