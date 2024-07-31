@@ -3,12 +3,23 @@ package com.rurouni.weatherapp.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
+import com.rurouni.weatherapp.R
 import com.rurouni.weatherapp.databinding.ItemWeatherForecastBinding
 import com.rurouni.weatherapp.model.WeatherModel
+import com.rurouni.weatherapp.view.DetailViewDirections
+import com.rurouni.weatherapp.view.MainPageViewDirections
 import com.squareup.picasso.Picasso
 
-class ForecastListAdapter(val weatherModel : WeatherModel) : RecyclerView.Adapter<ForecastListAdapter.ForecastListViewHolder>() {
+class ForecastListAdapter() : RecyclerView.Adapter<ForecastListAdapter.ForecastListViewHolder>() {
+
+    private  var weatherModel : WeatherModel = WeatherModel()
+
+    fun setModel(newModel : WeatherModel) {
+        this.weatherModel = newModel
+        notifyDataSetChanged()
+    }
 
     class  ForecastListViewHolder(val binding : ItemWeatherForecastBinding) : RecyclerView.ViewHolder(binding.root) {
     }
@@ -19,13 +30,21 @@ class ForecastListAdapter(val weatherModel : WeatherModel) : RecyclerView.Adapte
     }
 
     override fun getItemCount(): Int {
-        return weatherModel.forecast?.forecastday?.size ?: 0
+        var size =  0
+        try {
+            size = (weatherModel.forecast?.forecastday?.size)?: 0
+            if (size != 0) {
+                size++
+            }
+        }catch (e : Exception) {
+
+        }
+        return size
     }
 
     override fun onBindViewHolder(holder: ForecastListViewHolder, position: Int) {
         val binding = holder.binding
 
-        //Current Weather view
         if (position != 0) {
             val newPosition = position - 1
 
@@ -36,8 +55,14 @@ class ForecastListAdapter(val weatherModel : WeatherModel) : RecyclerView.Adapte
                 binding.forecastWeatherCondition.text = it.forecastday[newPosition].day?.condition?.text
                 binding.forecastItem.visibility = View.VISIBLE
                 binding.currentWeatherItem.visibility = View.GONE
+
+                binding.forecastItem.setOnClickListener { view ->
+                    val action = MainPageViewDirections.actionMainPageViewToDetailView(it.forecastday[newPosition].date.toString(),"${weatherModel.location?.lat},${weatherModel.location?.lon}")
+                    Navigation.findNavController(view).navigate(action)
+                }
             }
-        }else {
+        }
+        else {
             binding.locationName.text = "${weatherModel.location?.name}, ${weatherModel.location?.country}"
             binding.lastUpdated.text = "Last updated: ${weatherModel.current?.lastUpdated}"
             Picasso.get().load("https:${weatherModel.current?.condition?.icon}").into(binding.weatherIcon);

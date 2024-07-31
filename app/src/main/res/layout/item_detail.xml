@@ -6,20 +6,20 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:id="@+id/forecastItem"
+        android:id="@+id/detailHourItem"
         android:gravity="center"
         android:visibility="gone"
         android:layout_height="wrap_content">
         <!-- Hava Durumu İkonu -->
         <ImageView
-            android:id="@+id/forecast_weather_icon"
+            android:id="@+id/detailHourWeatherIcon"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_marginEnd="8dp" />
 
         <!-- Tarih -->
         <TextView
-            android:id="@+id/forecast_date"
+            android:id="@+id/detailHourTime"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -28,7 +28,7 @@
 
         <!-- Hava Durumu Açıklaması -->
         <TextView
-            android:id="@+id/forecast_weather_condition"
+            android:id="@+id/detailHourWeatherCondition"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -36,23 +36,15 @@
             android:text="Sunny"
             android:textSize="16sp" />
 
-
         <!-- Sıcaklık -->
         <TextView
-            android:id="@+id/forecast_temp"
+            android:id="@+id/detailHourTemp"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="29°C"
             android:gravity="center"
             android:textSize="16sp" />
-
-        <ImageView
-            android:id="@+id/goDetail"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@drawable/ic_right_24" />
-
 
     </LinearLayout>
 
@@ -61,11 +53,11 @@
         android:orientation="vertical"
         android:gravity="center"
         android:visibility="gone"
-        android:id="@+id/currentWeatherItem"
+        android:id="@+id/detailMainItem"
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/location_name"
+            android:id="@+id/detailMainLocationName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
@@ -76,7 +68,7 @@
 
         <!-- Last Updated -->
         <TextView
-            android:id="@+id/last_updated"
+            android:id="@+id/detailMainLastUpdated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/location_name"
@@ -85,13 +77,13 @@
 
         <!-- Weather Condition -->
         <ImageView
-            android:id="@+id/weather_icon"
+            android:id="@+id/detailMainWeatherIcon"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:layout_below="@id/last_updated" />
 
         <TextView
-            android:id="@+id/weather_condition"
+            android:id="@+id/detailMainWeatherCondition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@id/weather_icon"
@@ -101,7 +93,7 @@
 
         <!-- Temperature -->
         <TextView
-            android:id="@+id/temp_c"
+            android:id="@+id/detailMainTempC"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/weather_icon"
