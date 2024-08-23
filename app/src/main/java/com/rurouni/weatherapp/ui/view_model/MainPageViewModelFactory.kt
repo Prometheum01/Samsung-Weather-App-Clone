@@ -1,15 +1,14 @@
-package com.rurouni.weatherapp.ViewModel
+package com.rurouni.weatherapp.ui.view_model
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.rurouni.weatherapp.service.WeatherRepository
 
-class DetailViewModelFactory(private val weatherRepository: WeatherRepository) : ViewModelProvider.Factory  {
-
+class MainPageViewModelFactory(private val weatherRepository: WeatherRepository) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(DetailViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(MainPageViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return DetailViewModel(weatherRepository) as T
+            return MainPageViewModel(weatherRepository) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -1,15 +1,13 @@
-package com.rurouni.weatherapp.adapter
+package com.rurouni.weatherapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.rurouni.weatherapp.R
 import com.rurouni.weatherapp.databinding.ItemWeatherForecastBinding
 import com.rurouni.weatherapp.model.WeatherModel
-import com.rurouni.weatherapp.view.DetailViewDirections
-import com.rurouni.weatherapp.view.MainPageViewDirections
+import com.rurouni.weatherapp.ui.view.fragments.MainPageViewDirections
 import com.squareup.picasso.Picasso
 
 class ForecastListAdapter() : RecyclerView.Adapter<ForecastListAdapter.ForecastListViewHolder>() {

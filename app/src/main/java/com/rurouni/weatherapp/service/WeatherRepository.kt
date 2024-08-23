@@ -1,8 +1,8 @@
 package com.rurouni.weatherapp.service
 
 import com.rurouni.weatherapp.model.WeatherModel
-import com.rurouni.weatherapp.view.DAYS
-import com.rurouni.weatherapp.view.KEY
+import com.rurouni.weatherapp.ui.view.DAYS
+import com.rurouni.weatherapp.ui.view.KEY
 import retrofit2.Response
 
 class WeatherRepository(private val weatherApi: WeatherApi) {

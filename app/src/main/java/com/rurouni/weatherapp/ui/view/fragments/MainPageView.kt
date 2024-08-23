@@ -1,4 +1,4 @@
-package com.rurouni.weatherapp.view
+package com.rurouni.weatherapp.ui.view.fragments
 
 import android.Manifest
 import android.content.pm.PackageManager
@@ -17,9 +17,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.snackbar.Snackbar
-import com.rurouni.weatherapp.ViewModel.MainPageViewModel
-import com.rurouni.weatherapp.ViewModel.MainPageViewModelFactory
-import com.rurouni.weatherapp.adapter.ForecastListAdapter
+import com.rurouni.weatherapp.ui.view_model.MainPageViewModel
+import com.rurouni.weatherapp.ui.view_model.MainPageViewModelFactory
+import com.rurouni.weatherapp.ui.adapter.ForecastListAdapter
 import com.rurouni.weatherapp.databinding.FragmentMainPageViewBinding
 import com.rurouni.weatherapp.service.WeatherApi
 import com.rurouni.weatherapp.service.WeatherRepository
@@ -37,7 +37,8 @@ class MainPageView : Fragment() {
 
         val weatherApi = WeatherApi.getInstance()
         val weatherRepository = WeatherRepository(weatherApi)
-        viewModel = ViewModelProvider(this, MainPageViewModelFactory(weatherRepository)).get(MainPageViewModel::class.java)
+        viewModel = ViewModelProvider(this, MainPageViewModelFactory(weatherRepository)).get(
+            MainPageViewModel::class.java)
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity())
         setLaunchers()
     }

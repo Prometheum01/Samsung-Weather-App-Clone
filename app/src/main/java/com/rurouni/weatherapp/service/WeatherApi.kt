@@ -1,7 +1,7 @@
 package com.rurouni.weatherapp.service
 
 import com.rurouni.weatherapp.model.WeatherModel
-import com.rurouni.weatherapp.view.BASE_URL
+import com.rurouni.weatherapp.ui.view.BASE_URL
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory

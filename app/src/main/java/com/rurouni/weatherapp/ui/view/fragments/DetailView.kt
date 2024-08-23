@@ -1,4 +1,4 @@
-package com.rurouni.weatherapp.view
+package com.rurouni.weatherapp.ui.view.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,13 +8,9 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.rurouni.weatherapp.R
-import com.rurouni.weatherapp.ViewModel.DetailViewModel
-import com.rurouni.weatherapp.ViewModel.DetailViewModelFactory
-import com.rurouni.weatherapp.ViewModel.MainPageViewModel
-import com.rurouni.weatherapp.ViewModel.MainPageViewModelFactory
-import com.rurouni.weatherapp.adapter.DetailAdapter
-import com.rurouni.weatherapp.adapter.ForecastListAdapter
+import com.rurouni.weatherapp.ui.view_model.DetailViewModel
+import com.rurouni.weatherapp.ui.view_model.DetailViewModelFactory
+import com.rurouni.weatherapp.ui.adapter.DetailAdapter
 import com.rurouni.weatherapp.databinding.FragmentDetailViewBinding
 import com.rurouni.weatherapp.service.WeatherApi
 import com.rurouni.weatherapp.service.WeatherRepository
@@ -57,7 +53,10 @@ class DetailView : Fragment() {
 
     private fun getDetails() {
         arguments?.let {
-            viewModel.getData(DetailViewArgs.fromBundle(it).location, DetailViewArgs.fromBundle(it).date)
+            viewModel.getData(
+                DetailViewArgs.fromBundle(it).location, DetailViewArgs.fromBundle(
+                    it
+                ).date)
         }
     }
 

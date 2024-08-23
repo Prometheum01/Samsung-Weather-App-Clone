@@ -1,4 +1,4 @@
-package com.rurouni.weatherapp.adapter
+package com.rurouni.weatherapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.View

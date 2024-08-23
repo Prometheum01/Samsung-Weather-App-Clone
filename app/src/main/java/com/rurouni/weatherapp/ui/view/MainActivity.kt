@@ -1,4 +1,4 @@
-package com.rurouni.weatherapp.view
+package com.rurouni.weatherapp.ui.view
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

@@ -1,20 +1,23 @@
-package com.rurouni.weatherapp.ViewModel
+package com.rurouni.weatherapp.ui.view_model
 
+import android.Manifest
+import android.content.Context
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.Priority
+import com.google.android.gms.tasks.CancellationToken
+import com.google.android.gms.tasks.CancellationTokenSource
+import com.google.android.gms.tasks.OnTokenCanceledListener
 import com.google.android.gms.tasks.Task
 import com.rurouni.weatherapp.model.WeatherModel
 import com.rurouni.weatherapp.service.WeatherRepository
-import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.suspendCancellableCoroutine
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import kotlin.coroutines.resumeWithException
 
-class DetailViewModel(private val weatherRepository: WeatherRepository) : ViewModel()  {
+class MainPageViewModel(private val weatherRepository: WeatherRepository) : ViewModel() {
     val errorMessage = MutableLiveData<String>()
     val weatherModel = MutableLiveData<WeatherModel>()
     val loading = MutableLiveData<Boolean>()
@@ -24,12 +27,14 @@ class DetailViewModel(private val weatherRepository: WeatherRepository) : ViewMo
         onError("Exception handled: ${throwable.localizedMessage}")
     }
 
-    fun getData(location : String, date : String) {
+    fun getWeather(fusedLocationClient: FusedLocationProviderClient, context: Context) {
         loading.value = true
 
         job = CoroutineScope(Dispatchers.IO + exceptionHandler).launch {
             try {
-                val response = weatherRepository.getWeatherWithDate(location, date)
+                val location = getLocation(fusedLocationClient, context)
+                val response = weatherRepository.getWeather(location)
+
                 withContext(Dispatchers.Main) {
                     if (response.isSuccessful) {
                         response.body()?.let { weatherModel.value = it }
@@ -38,11 +43,28 @@ class DetailViewModel(private val weatherRepository: WeatherRepository) : ViewMo
                     }
                     loading.value = false
                 }
-            } catch (e : Exception) {
+            } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
                     onError("Error: ${e.localizedMessage}")
                     loading.value = false
                 }
+            }
+        }
+    }
+
+    private suspend fun getLocation(fusedLocationClient: FusedLocationProviderClient, context: Context): String {
+        return withContext(Dispatchers.IO) {
+            if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+                val locationResult = fusedLocationClient.getCurrentLocation(
+                    Priority.PRIORITY_HIGH_ACCURACY, object : CancellationToken() {
+                        override fun onCanceledRequested(listener: OnTokenCanceledListener) = CancellationTokenSource().token
+                        override fun isCancellationRequested() = false
+                    }
+                ).await()
+
+                "${locationResult.latitude},${locationResult.longitude}"
+            } else {
+                throw Exception("Location permission not granted")
             }
         }
     }

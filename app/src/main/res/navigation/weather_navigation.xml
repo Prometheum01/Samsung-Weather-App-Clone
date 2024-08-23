@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/mainPageView"
-        android:name="com.rurouni.weatherapp.view.MainPageView"
+        android:name="com.rurouni.weatherapp.ui.view.fragments.MainPageView"
         android:label="MainPageView" >
         <action
             android:id="@+id/action_mainPageView_to_detailView"
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/detailView"
-        android:name="com.rurouni.weatherapp.view.DetailView"
+        android:name="com.rurouni.weatherapp.ui.view.fragments.DetailView"
         android:label="fragment_detail_view"
         tools:layout="@layout/fragment_detail_view" >
         <action
