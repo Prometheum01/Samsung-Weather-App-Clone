@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_marginVertical="@dimen/_8sdp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_day"
+        android:textSize="@dimen/_12sdp"
+        android:textColor="@color/g_black"
+        android:fontFamily="@font/sarabun_regular"
+        android:layout_weight="4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+    <ImageView
+        android:id="@+id/img_condition"
+        android:layout_gravity="end|center"
+        android:layout_width="@dimen/_18sdp"
+        android:layout_height="@dimen/_18sdp"/>
+
+    <TextView
+        android:id="@+id/tv_high_temperature"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="@color/g_black"
+        android:fontFamily="@font/sarabun_regular"
+        android:gravity="end"
+        android:layout_marginEnd="@dimen/_4sdp"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:layout_weight="1"
+        android:id="@+id/tv_low_temperature"
+        android:textSize="@dimen/_10sdp"
+        android:textColor="@color/g_black"
+        android:fontFamily="@font/sarabun_regular"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>
