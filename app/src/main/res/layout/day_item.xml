@@ -1,42 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_marginVertical="@dimen/_8sdp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_day"
-        android:textSize="@dimen/_12sdp"
+        android:text="Today"
+        android:textSize="@dimen/_14sdp"
         android:textColor="@color/g_black"
-        android:fontFamily="@font/sarabun_regular"
+        android:fontFamily="@font/sarabun_semibold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <LinearLayout
         android:layout_weight="4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
-
-    <ImageView
-        android:id="@+id/img_condition"
-        android:layout_gravity="end|center"
-        android:layout_width="@dimen/_18sdp"
-        android:layout_height="@dimen/_18sdp"/>
-
-    <TextView
-        android:id="@+id/tv_high_temperature"
-        android:textSize="@dimen/_10sdp"
-        android:textColor="@color/g_black"
-        android:fontFamily="@font/sarabun_regular"
         android:gravity="end"
-        android:layout_marginEnd="@dimen/_4sdp"
-        android:layout_weight="1"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content">
 
-    <TextView
-        android:layout_weight="1"
-        android:id="@+id/tv_low_temperature"
-        android:textSize="@dimen/_10sdp"
-        android:textColor="@color/g_black"
-        android:fontFamily="@font/sarabun_regular"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_gravity="center|start"
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_rain_percentage"
+                android:layout_gravity="center"
+                app:tint="@color/blue"
+                android:src="@drawable/ic_half_drop"
+                android:layout_width="@dimen/_12sdp"
+                android:layout_height="@dimen/_12sdp"/>
+
+            <TextView
+                android:id="@+id/tv_rain_percentage"
+                android:text="%75"
+                android:layout_gravity="center"
+                android:textSize="@dimen/_10sdp"
+                android:textColor="@color/gw_black"
+                android:fontFamily="@font/sarabun_medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_marginHorizontal="@dimen/_12sdp"
+            android:id="@+id/img_condition"
+            android:layout_gravity="center"
+            app:tint="@color/g_black"
+            android:src="@drawable/ic_1000"
+            android:layout_width="@dimen/_14sdp"
+            android:layout_height="@dimen/_14sdp"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_high_temperature"
+                android:textSize="@dimen/_14sdp"
+                android:textColor="@color/g_black"
+                android:fontFamily="@font/sarabun_semibold"
+                android:gravity="end"
+                android:text="33°"
+                android:layout_marginEnd="@dimen/_4sdp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <TextView
+                android:text="16°"
+                android:id="@+id/tv_low_temperature"
+                android:textSize="@dimen/_14sdp"
+                android:textColor="@color/g_black"
+                android:fontFamily="@font/sarabun_semibold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>

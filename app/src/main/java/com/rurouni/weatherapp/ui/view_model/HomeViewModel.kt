@@ -18,7 +18,7 @@ class HomeViewModel @Inject constructor(private val weatherRepository: WeatherRe
 
     fun getForecast() = viewModelScope.launch {
 
-        weatherRepository.getRemoteForecast("48.8567,2.3508", "tr", "3").collect {values ->
+        weatherRepository.getRemoteForecast("48.8567,2.3508", "en", "3").collect {values ->
 
             _response.value = values
 
