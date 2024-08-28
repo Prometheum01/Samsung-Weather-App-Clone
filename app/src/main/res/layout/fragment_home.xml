@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/layout_main"
-    android:background="@color/blue"
+    android:background="@color/primaryMain"
     tools:context=".ui.view.fragments.HomeFragment">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -43,7 +43,7 @@
                     app:layout_constraintBottom_toBottomOf="@+id/layout_general_info"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/layout_general_info"
-                    app:tint="@color/white" />
+                    app:tint="@color/onPrimaryMain" />
 
                 <LinearLayout
                     android:id="@+id/layout_general_info"
@@ -61,7 +61,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="22°"
-                        android:textColor="@color/white"
+                        android:textColor="@color/onPrimaryMain"
                         android:textSize="@dimen/_48sdp" />
 
                     <TextView
@@ -70,7 +70,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_regular"
                         android:text="Partly cloud"
-                        android:textColor="@color/white"
+                        android:textColor="@color/onPrimaryMain"
                         android:textSize="@dimen/_24sdp" />
 
                     <LinearLayout
@@ -86,14 +86,14 @@
                             android:layout_gravity="center"
                             android:fontFamily="@font/nunito_regular"
                             android:text="Paris, France"
-                            android:textColor="@color/white"
+                            android:textColor="@color/onPrimaryMain"
                             android:textSize="@dimen/_14sdp" />
 
                         <ImageView
                             android:layout_width="@dimen/_22sdp"
                             android:layout_height="@dimen/_22sdp"
                             android:src="@drawable/ic_pin"
-                            app:tint="@color/white" />
+                            app:tint="@color/onPrimaryMain" />
 
                     </LinearLayout>
 
@@ -103,7 +103,7 @@
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_regular"
                         android:text="32° / 16°, Feels like 24°"
-                        android:textColor="@color/white"
+                        android:textColor="@color/onPrimaryMain"
                         android:textSize="@dimen/_10sdp" />
 
                 </LinearLayout>
@@ -115,7 +115,7 @@
                 android:elevation="0dp"
                 android:forceHasOverlappingRendering="false"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_90sdp"
+                android:layout_height="@dimen/_100sdp"
                 app:layout_collapseMode="pin">
 
                 <LinearLayout
@@ -124,10 +124,11 @@
                     android:layout_height="wrap_content">
 
                     <TextView
+                        android:layout_marginStart="@dimen/_4sdp"
                         android:id="@+id/tv_collapse_current_temp"
                         android:fontFamily="@font/nunito_semibold"
                         android:text="22°"
-                        android:textColor="@color/g_black"
+                        android:textColor="@color/onPrimarySystem"
                         android:textSize="@dimen/_48sdp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
@@ -143,7 +144,7 @@
                             android:id="@+id/tv_collapse_detail_temp"
                             android:fontFamily="@font/nunito_semibold"
                             android:text="32° / 16°"
-                            android:textColor="@color/g_black"
+                            android:textColor="@color/onPrimarySystem"
                             android:textSize="@dimen/_10sdp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -152,7 +153,7 @@
                             android:id="@+id/tv_collapse_condition"
                             android:fontFamily="@font/nunito_semibold"
                             android:text="Partly cloud"
-                            android:textColor="@color/g_black"
+                            android:textColor="@color/onPrimarySystem"
                             android:textSize="@dimen/_18sdp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
@@ -166,11 +167,12 @@
                         android:src="@drawable/ic_1000"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_36sdp"
-                        app:tint="@color/g_black" />
+                        app:tint="@color/onPrimarySystem" />
 
                 </LinearLayout>
 
             </androidx.appcompat.widget.Toolbar>
+
         </com.google.android.material.appbar.CollapsingToolbarLayout>
 
     </com.google.android.material.appbar.AppBarLayout>
@@ -191,7 +193,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 app:cardCornerRadius="16dp"
-                android:background="@color/white"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/secondaryMain"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -205,12 +208,13 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <TextView
+                        android:id="@+id/tv_hourly"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
                         android:fontFamily="@font/sarabun_regular"
                         android:text="Hourly"
-                        android:textColor="@color/g_black"
+                        android:textColor="@color/onPrimaryMain"
                         android:textSize="@dimen/_15sdp" />
 
                     <androidx.recyclerview.widget.RecyclerView
@@ -228,7 +232,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/_8sdp"
                 app:cardCornerRadius="16dp"
-                android:background="@color/white"
+                app:cardElevation="0dp"
+                app:cardBackgroundColor="@color/secondaryMain"
                 app:cardUseCompatPadding="true">
 
                 <LinearLayout
@@ -246,6 +251,269 @@
                 </LinearLayout>
 
             </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_uv"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/secondaryMain"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_marginVertical="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/img_uv"
+                            android:src="@drawable/ic_uv"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:tint="@color/onPrimaryMain" />
+
+                        <TextView
+                            android:id="@+id/tv_uv_title"
+                            android:gravity="center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sarabun_regular"
+                            android:text="Uv Index"
+                            android:textColor="@color/onPrimaryMain"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tv_uv_value"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sarabun_regular"
+                            android:text="Low"
+                            android:textColor="@color/onSecondaryMain"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_humidity"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/secondaryMain"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_marginVertical="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_4sdp"                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/img_humidity"
+                            android:src="@drawable/ic_humidity"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:tint="@color/onPrimaryMain" />
+
+                        <TextView
+                            android:id="@+id/tv_humidity_title"
+                            android:gravity="center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sarabun_regular"
+                            android:text="Humidity"
+                            android:textColor="@color/onPrimaryMain"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tv_humidity_value"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sarabun_regular"
+                            android:text="%27"
+                            android:textColor="@color/onSecondaryMain"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_wind"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/_8sdp"
+                    android:layout_marginEnd="@dimen/_4sdp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/secondaryMain"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_marginVertical="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_4sdp"                        android:layout_gravity="center"
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/img_wind"
+                            android:src="@drawable/ic_wind"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:tint="@color/onPrimaryMain" />
+
+                        <TextView
+                            android:id="@+id/tv_wind_title"
+                            android:gravity="center"
+                            android:layout_marginTop="@dimen/_8sdp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sarabun_regular"
+                            android:text="Wind"
+                            android:textColor="@color/onPrimaryMain"
+                            android:textSize="@dimen/_12sdp" />
+
+                        <TextView
+                            android:id="@+id/tv_wind_value"
+                            android:gravity="center"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/sarabun_regular"
+                            android:text="10 km/h"
+                            android:textColor="@color/onSecondaryMain"
+                            android:textSize="@dimen/_10sdp" />
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/card_suntime"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginEnd="@dimen/_8sdp"
+                    android:layout_marginStart="@dimen/_4sdp"
+                    app:cardCornerRadius="16dp"
+                    app:cardElevation="0dp"
+                    app:cardBackgroundColor="@color/secondaryMain"
+                    app:cardUseCompatPadding="true">
+
+                    <LinearLayout
+                        android:layout_marginVertical="@dimen/_12sdp"
+                        android:layout_marginHorizontal="@dimen/_4sdp"
+                        android:layout_gravity="center"
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_marginEnd="@dimen/_12sdp"
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/img_sunrise"
+                                android:src="@drawable/ic_sunrise"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:tint="@color/onPrimaryMain" />
+
+                            <TextView
+                                android:id="@+id/tv_sunrise_title"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sarabun_regular"
+                                android:text="Sunrise"
+                                android:textColor="@color/onPrimaryMain"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_sunrise_value"
+                                android:gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sarabun_regular"
+                                android:text="06:08"
+                                android:textColor="@color/onSecondaryMain"
+                                android:textSize="@dimen/_10sdp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_gravity="center"
+                            android:orientation="vertical"
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
+
+                            <ImageView
+                                android:id="@+id/img_sunset"
+                                android:src="@drawable/ic_sunset"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:tint="@color/onPrimaryMain" />
+
+                            <TextView
+                                android:id="@+id/tv_sunset_title"
+                                android:gravity="center"
+                                android:layout_marginTop="@dimen/_8sdp"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sarabun_regular"
+                                android:text="Sunset"
+                                android:textColor="@color/onPrimaryMain"
+                                android:textSize="@dimen/_12sdp" />
+
+                            <TextView
+                                android:id="@+id/tv_sunset_value"
+                                android:gravity="center"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/sarabun_regular"
+                                android:text="19:03"
+                                android:textColor="@color/onSecondaryMain"
+                                android:textSize="@dimen/_10sdp" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
         </LinearLayout>
 

@@ -1,28 +1,27 @@
 package com.rurouni.weatherapp.ui.view.fragments
 
-import android.animation.ArgbEvaluator
-import android.animation.ObjectAnimator
+import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
-import com.rurouni.weatherapp.R
 import com.rurouni.weatherapp.data.source.remote.model.ForecastWeather
 import com.rurouni.weatherapp.databinding.FragmentHomeBinding
+import com.rurouni.weatherapp.ui.adapter.AdapterAnimation
 import com.rurouni.weatherapp.utils.mapper.ForecastToDayItemList
 import com.rurouni.weatherapp.utils.mapper.ForecastToHourlyList
 import com.rurouni.weatherapp.ui.adapter.DayListAdapter
 import com.rurouni.weatherapp.ui.adapter.HourlyListAdapter
+import com.rurouni.weatherapp.ui.model.ColorPalette
+import com.rurouni.weatherapp.ui.model.ColorState
+import com.rurouni.weatherapp.ui.model.ColorTheme
 import com.rurouni.weatherapp.ui.view_model.HomeViewModel
 import com.rurouni.weatherapp.utils.ApiResultHandler
 import com.rurouni.weatherapp.utils.Utils
-import com.rurouni.weatherapp.utils.Utils.fadeIn
-import com.rurouni.weatherapp.utils.Utils.fadeOut
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -33,12 +32,15 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     val hourlyListAdapter: HourlyListAdapter by lazy {
-        HourlyListAdapter()
+        HourlyListAdapter(binding.rwHours)
     }
 
     val dayListAdapter: DayListAdapter by lazy {
         DayListAdapter()
     }
+
+    private lateinit var mainState : ColorState
+    private lateinit var systemState : ColorState
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +53,10 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
+
+        mainState = ColorState(ColorPalette.mainPalette(requireContext()), ColorPalette.systemPalette(requireContext()), ColorTheme.MAIN)
+        systemState = ColorState(ColorPalette.systemPalette(requireContext()), ColorPalette.mainPalette(requireContext()), ColorTheme.SYSTEM)
+
         appBarObserver()
         return view
     }
@@ -103,6 +109,11 @@ class HomeFragment : Fragment() {
                             binding.tvCollapseDetailTemp.text = "${it.forecast.forecastday.first().day.maxtemp_c}° / ${it.forecast.forecastday.first().day.mintemp_c}°"
                             binding.tvCollapseCondition.text =  it.current.condition.text
 
+                            binding.tvUvValue.text = it.current.uv.toString()
+                            binding.tvHumidityValue.text = "%${it.current.humidity}"
+                            binding.tvWindValue.text = "${it.current.wind_kph} kph"
+                            binding.tvSunriseValue.text = it.forecast.forecastday.first().astro.sunrise
+                            binding.tvSunsetValue.text = it.forecast.forecastday.first().astro.sunset
 
                             val code = Utils.codeToIconId(requireContext(), it.current.condition.code)
                             code?.let {
@@ -112,9 +123,11 @@ class HomeFragment : Fragment() {
 
                             val hourlyItemList = ForecastToHourlyList(it.location, it.forecast)
                             hourlyListAdapter.setList(hourlyItemList)
+                            hourlyListAdapter.setColorState(mainState)
 
                             val dayItemList = ForecastToDayItemList().invoke(it.forecast)
                             dayListAdapter.setList(dayItemList)
+                            dayListAdapter.setColorState(mainState)
                         }
                     },
                     onFailure = {
@@ -132,77 +145,75 @@ class HomeFragment : Fragment() {
         val expandedContent = binding.layoutExpand
         val toolbarContent = binding.layoutToolbar
 
-        val defaultColor = ContextCompat.getColor(requireContext(), R.color.blue)
-        val collapseColor = ContextCompat.getColor(requireContext(), R.color.g_white)
+        var animateFlag = false
 
         appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
             val totalScrollRange = appBarLayout.totalScrollRange
-            val progress = Math.abs(verticalOffset / totalScrollRange.toFloat()) // Kaydırma oranını hesapla (0.0 ile 1.0 arasında)
+            val progress = Math.abs(verticalOffset / totalScrollRange.toFloat())
 
-            // Layoutların görünürlüğünü ve saydamlığını ayarla
-            expandedContent.alpha = 1 - progress // Yukarı kaydırıldıkça görünürlüğü azalır
-            toolbarContent.alpha = progress // Yukarı kaydırıldıkça görünürlüğü artar
+            expandedContent.alpha = 1 - (progress * 2)
+            toolbarContent.alpha = (progress * 2)
 
-            // Renk geçişini ayarla
-            val blendedColor = ArgbEvaluator().evaluate(progress, defaultColor, collapseColor) as Int
-            binding.layoutMain.setBackgroundColor(blendedColor)
-            binding.layoutToolbar.setBackgroundColor(blendedColor)
-
-            // Tamamen collapse olduğunda expandedContent görünmez ve toolbarContent görünür hale gelir
-            if (progress >= 0.5) {
-                expandedContent.visibility = View.VISIBLE
-                toolbarContent.visibility = View.VISIBLE
-
-                if (progress >= 1.0) {
-                    expandedContent.visibility = View.INVISIBLE
-                    toolbarContent.visibility = View.VISIBLE
+            if (progress > 0.4) {
+                if (!animateFlag) {
+                    changePalette(mainState, systemState)
+                    animateFlag = true
                 }
-
-            } else {
-                expandedContent.visibility = View.VISIBLE
-                toolbarContent.visibility = View.VISIBLE
-
-                if (progress <= 0.0) {
-                    expandedContent.visibility = View.VISIBLE
-                    toolbarContent.visibility = View.INVISIBLE
+                if (progress >= 1.0) {
+                    toolbarContent.setBackgroundColor(systemState.currentPalette.primary)
+                }else if (progress <= 0.9) {
+                    toolbarContent.setBackgroundColor(Color.TRANSPARENT)
+                }
+            }
+            else {
+                if (animateFlag) {
+                    changePalette(systemState, mainState)
+                    animateFlag = false
                 }
             }
         })
     }
 
+    private fun changePalette(current: ColorState, next : ColorState) {
+        with(current) {
+            AdapterAnimation.animateBackgroundColor(binding.layoutMain, currentPalette.primary, nextPalette.primary)
 
-//    private fun appBarObserver() {
-//        val appBarLayout = binding.appbar
-//        val expandedContent = binding.layoutExpand
-//        val toolbarContent = binding.layoutToolbar
-//
-//        val defaultColor = ContextCompat.getColor(requireContext(), R.color.blue)
-//        val collapseColor = ContextCompat.getColor(requireContext(), R.color.g_white)
-//
-//        appBarLayout.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
-//            val totalScrollRange = appBarLayout.totalScrollRange
-//
-//            if (Math.abs(verticalOffset) >= totalScrollRange) {
-//                expandedContent.visibility = View.INVISIBLE
-//                toolbarContent.visibility = View.VISIBLE
-//
-//                val colorAnimation = ObjectAnimator.ofObject(
-//                    binding.layoutMain, "backgroundColor", ArgbEvaluator(), defaultColor, collapseColor
-//                )
-//                colorAnimation.duration = 300 // Geçiş süresi (milisaniye)
-//                colorAnimation.start()
-//
-//            }
-//            else {
-//                expandedContent.visibility = View.VISIBLE
-//                toolbarContent.visibility = View.INVISIBLE
-//                val colorAnimation = ObjectAnimator.ofObject(
-//                    binding.layoutMain, "backgroundColor", ArgbEvaluator(), defaultColor, defaultColor
-//                )
-//                colorAnimation.duration = 300 // Geçiş süresi (milisaniye)
-//                colorAnimation.start()
-//            }
-//        })
-//
-//    }
+            //Cards
+            AdapterAnimation.animateCardViewBackgroundColor(binding.cardHourlyList, currentPalette.secondary, nextPalette.secondary)
+            AdapterAnimation.animateCardViewBackgroundColor(binding.cardDaysList, currentPalette.secondary, nextPalette.secondary)
+            AdapterAnimation.animateCardViewBackgroundColor(binding.cardUv, currentPalette.secondary, nextPalette.secondary)
+            AdapterAnimation.animateCardViewBackgroundColor(binding.cardHumidity, currentPalette.secondary, nextPalette.secondary)
+            AdapterAnimation.animateCardViewBackgroundColor(binding.cardWind, currentPalette.secondary, nextPalette.secondary)
+            AdapterAnimation.animateCardViewBackgroundColor(binding.cardSuntime, currentPalette.secondary, nextPalette.secondary)
+
+            //Card Values
+            AdapterAnimation.animateImageViewTintColorChange(binding.imgUv, currentPalette.onPrimary, nextPalette.onPrimary)
+            AdapterAnimation.animateImageViewTintColorChange(binding.imgHumidity, currentPalette.onPrimary, nextPalette.onPrimary)
+            AdapterAnimation.animateImageViewTintColorChange(binding.imgWind, currentPalette.onPrimary, nextPalette.onPrimary)
+            AdapterAnimation.animateImageViewTintColorChange(binding.imgSunrise, currentPalette.onPrimary, nextPalette.onPrimary)
+            AdapterAnimation.animateImageViewTintColorChange(binding.imgSunset, currentPalette.onPrimary, nextPalette.onPrimary)
+
+            AdapterAnimation.animateTextColorChange(binding.tvUvTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            AdapterAnimation.animateTextColorChange(binding.tvUvValue, currentPalette.onSecondary, nextPalette.onSecondary)
+
+            AdapterAnimation.animateTextColorChange(binding.tvHumidityTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            AdapterAnimation.animateTextColorChange(binding.tvHumidityValue, currentPalette.onSecondary, nextPalette.onSecondary)
+
+            AdapterAnimation.animateTextColorChange(binding.tvWindTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            AdapterAnimation.animateTextColorChange(binding.tvWindValue, currentPalette.onSecondary, nextPalette.onSecondary)
+
+            AdapterAnimation.animateTextColorChange(binding.tvSunriseTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            AdapterAnimation.animateTextColorChange(binding.tvSunriseValue, currentPalette.onSecondary, nextPalette.onSecondary)
+
+            AdapterAnimation.animateTextColorChange(binding.tvSunsetTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            AdapterAnimation.animateTextColorChange(binding.tvSunsetValue, currentPalette.onSecondary, nextPalette.onSecondary)
+
+            AdapterAnimation.animateTextColorChange(binding.tvHourly, currentPalette.onPrimary, nextPalette.onPrimary)
+
+        }
+        with(next) {
+            hourlyListAdapter.animate(next)
+            dayListAdapter.animate(next)
+        }
+    }
 }

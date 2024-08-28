@@ -1,9 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="g_black">#FF474747</color>
-    <color name="gw_black">#A2A2A2</color>
-    <color name="g_white">#FFF7F7F6</color>
-    <color name="blue">#FF74B0F2</color>
+    <color name="primaryMain">#80b8f8</color>
+    <color name="onPrimaryMain">#fbffff</color>
+    <color name="secondaryMain">#589de5</color>
+    <color name="onSecondaryMain">#D0E0EF</color>
+
+<!--    <color name="primarySystemLight">#f7f6f7</color>-->
+<!--    <color name="onPrimarySystemLight">#252424</color>-->
+<!--    <color name="secondarySystemLight">#fcfcfc</color>-->
+<!--    <color name="onSecondarySystemLight">#808081</color>-->
+
+<!--    <color name="primarySystemDark">#010000</color>-->
+<!--    <color name="onPrimarySystemDark">#f9faf8</color>-->
+<!--    <color name="secondarySystemDark">#171717</color>-->
+<!--    <color name="onSecondarySystemDark">#979697</color>-->
 </resources>

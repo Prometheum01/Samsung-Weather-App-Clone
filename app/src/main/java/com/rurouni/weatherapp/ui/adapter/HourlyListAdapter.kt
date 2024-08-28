@@ -2,14 +2,16 @@ package com.rurouni.weatherapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
-import com.rurouni.weatherapp.R
 import com.rurouni.weatherapp.databinding.HourlyItemBinding
+import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateImageViewTintColorChange
+import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateTextColorChange
+import com.rurouni.weatherapp.ui.model.ColorState
 import com.rurouni.weatherapp.ui.model.HourlyItem
-import com.rurouni.weatherapp.utils.Utils
 import com.rurouni.weatherapp.utils.Utils.codeToIconId
 
-class HourlyListAdapter : RecyclerView.Adapter<HourlyListAdapter.ViewHolder>() {
+class HourlyListAdapter(private val recyclerView: RecyclerView) : RecyclerView.Adapter<HourlyListAdapter.ViewHolder>(){
 
     private var list = listOf<HourlyItem>()
 
@@ -18,7 +20,7 @@ class HourlyListAdapter : RecyclerView.Adapter<HourlyListAdapter.ViewHolder>() {
         notifyDataSetChanged()
     }
 
-    inner class ViewHolder(val binding : HourlyItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: HourlyItemBinding) : RecyclerView.ViewHolder(binding.root) {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -33,19 +35,47 @@ class HourlyListAdapter : RecyclerView.Adapter<HourlyListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val binding = holder.binding
 
-        binding.tvHour.text = list[position].hour
-        val iconCode = list[position].condition.toIntOrNull()
+        if (isAnimate) {
+            animateTextColorChange(binding.tvHour, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary).doOnEnd {
+            }
+            animateTextColorChange(binding.tvTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary).doOnEnd {
+            }
+            animateImageViewTintColorChange(binding.imgCondition, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary).doOnEnd {
+                isAnimate = false
+                setColorState(nextColorState)
+            }
+        }
 
+        binding.tvHour.text = list[position].hour
+        binding.tvTemperature.text = "${list[position].temperature}°"
+
+        val iconCode = list[position].condition.toIntOrNull()
         iconCode?.let {
             val icon = codeToIconId(holder.itemView.context, it)
-
             icon?.let { id ->
                 binding.imgCondition.setImageResource(id)
             }
         }
 
-        binding.tvTemperature.text = "${list[position].temperature}°C"
+        if (!isAnimate) {
+            binding.tvHour.setTextColor(colorState.currentPalette.onPrimary)
+            binding.tvTemperature.setTextColor(colorState.currentPalette.onPrimary)
+            binding.imgCondition.setColorFilter(colorState.currentPalette.onPrimary)
+        }
     }
 
+    private lateinit var colorState: ColorState
+    private lateinit var nextColorState: ColorState
+    private var isAnimate = false
 
+    fun setColorState(state: ColorState) {
+        this.colorState = state
+        notifyDataSetChanged()
+    }
+
+    fun animate(nextColorState: ColorState) {
+        this.isAnimate = true
+        this.nextColorState = nextColorState
+        notifyDataSetChanged()
+    }
 }

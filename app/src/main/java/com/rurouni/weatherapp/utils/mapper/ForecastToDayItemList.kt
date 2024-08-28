@@ -26,7 +26,6 @@ class ForecastToDayItemList {
             val item = ForecastDayItem(indexToDayLabel(index, forecastday), forecastday.day.condition.code.toString(), forecastday.day.maxtemp_c.toString(), forecastday.day.mintemp_c.toString(), forecastday.day.daily_chance_of_rain)
             list.add(item)
             list.add(item)
-            list.add(item)
         }
 
         return list

@@ -9,7 +9,7 @@
         android:id="@+id/tv_day"
         android:text="Today"
         android:textSize="@dimen/_14sdp"
-        android:textColor="@color/g_black"
+        android:textColor="@color/onPrimaryMain"
         android:fontFamily="@font/sarabun_semibold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
@@ -28,7 +28,7 @@
             <ImageView
                 android:id="@+id/img_rain_percentage"
                 android:layout_gravity="center"
-                app:tint="@color/blue"
+                app:tint="@color/onPrimaryMain"
                 android:src="@drawable/ic_half_drop"
                 android:layout_width="@dimen/_12sdp"
                 android:layout_height="@dimen/_12sdp"/>
@@ -38,7 +38,7 @@
                 android:text="%75"
                 android:layout_gravity="center"
                 android:textSize="@dimen/_10sdp"
-                android:textColor="@color/gw_black"
+                android:textColor="@color/onSecondaryMain"
                 android:fontFamily="@font/sarabun_medium"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
@@ -49,7 +49,7 @@
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:id="@+id/img_condition"
             android:layout_gravity="center"
-            app:tint="@color/g_black"
+            app:tint="@color/onPrimaryMain"
             android:src="@drawable/ic_1000"
             android:layout_width="@dimen/_14sdp"
             android:layout_height="@dimen/_14sdp"/>
@@ -61,7 +61,7 @@
             <TextView
                 android:id="@+id/tv_high_temperature"
                 android:textSize="@dimen/_14sdp"
-                android:textColor="@color/g_black"
+                android:textColor="@color/onPrimaryMain"
                 android:fontFamily="@font/sarabun_semibold"
                 android:gravity="end"
                 android:text="33°"
@@ -73,7 +73,7 @@
                 android:text="16°"
                 android:id="@+id/tv_low_temperature"
                 android:textSize="@dimen/_14sdp"
-                android:textColor="@color/g_black"
+                android:textColor="@color/onPrimaryMain"
                 android:fontFamily="@font/sarabun_semibold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>

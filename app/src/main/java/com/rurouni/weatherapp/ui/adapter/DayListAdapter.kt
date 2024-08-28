@@ -2,9 +2,13 @@ package com.rurouni.weatherapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.rurouni.weatherapp.R
 import com.rurouni.weatherapp.databinding.DayItemBinding
+import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateImageViewTintColorChange
+import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateTextColorChange
+import com.rurouni.weatherapp.ui.model.ColorState
 import com.rurouni.weatherapp.ui.model.ForecastDayItem
 import com.rurouni.weatherapp.utils.Utils.codeToIconId
 
@@ -30,6 +34,18 @@ class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val binding = holder.binding
+
+        if (isAnimate) {
+            animateTextColorChange(binding.tvDay, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
+            animateTextColorChange(binding.tvHighTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
+            animateTextColorChange(binding.tvLowTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
+            animateTextColorChange(binding.tvRainPercentage, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
+            animateImageViewTintColorChange(binding.imgRainPercentage, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
+            animateImageViewTintColorChange(binding.imgCondition, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary).doOnEnd {
+                isAnimate = false
+                setColorState(nextColorState)
+            }
+        }
 
         binding.tvDay.text = list[position].day
         binding.tvHighTemperature.text = "${list[position].highTemperature}°"
@@ -58,7 +74,29 @@ class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
                 binding.imgCondition.setImageResource(id)
             }
         }
+
+        if (!isAnimate) {
+            binding.tvDay.setTextColor(colorState.currentPalette.onPrimary)
+            binding.tvHighTemperature.setTextColor(colorState.currentPalette.onPrimary)
+            binding.tvLowTemperature.setTextColor(colorState.currentPalette.onPrimary)
+            binding.tvRainPercentage.setTextColor(colorState.currentPalette.onSecondary)
+            binding.imgCondition.setColorFilter(colorState.currentPalette.onPrimary)
+            binding.imgRainPercentage.setColorFilter(colorState.currentPalette.onPrimary)
+        }
     }
 
+    private lateinit var colorState: ColorState
+    private lateinit var nextColorState: ColorState
+    private var isAnimate = false
 
+    fun setColorState(state: ColorState) {
+        this.colorState = state
+        notifyDataSetChanged()
+    }
+
+    fun animate(nextColorState: ColorState) {
+        this.isAnimate = true
+        this.nextColorState = nextColorState
+        notifyDataSetChanged()
+    }
 }

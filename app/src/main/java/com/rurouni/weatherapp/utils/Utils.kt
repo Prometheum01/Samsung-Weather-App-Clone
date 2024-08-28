@@ -4,7 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.view.View
+import androidx.core.content.ContextCompat
 import com.rurouni.weatherapp.R
 
 object Utils {
@@ -51,20 +51,7 @@ object Utils {
         return if (resourceId != 0) resourceId else null
     }
 
-    fun fadeIn(view: View) {
-        view.visibility = View.VISIBLE
-        view.alpha = 0f
-        view.animate()
-            .alpha(1f)
-            .setDuration(300) // Geçiş süresi (milisaniye)
-            .start()
-    }
-
-    fun fadeOut(view: View) {
-        view.animate()
-            .alpha(0f)
-            .setDuration(300) // Geçiş süresi (milisaniye)
-            .withEndAction { view.visibility = View.INVISIBLE }
-            .start()
+    fun getColor(context: Context, colorResId: Int): Int {
+        return ContextCompat.getColor(context, colorResId)
     }
 }
