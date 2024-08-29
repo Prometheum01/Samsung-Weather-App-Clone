@@ -1,11 +1,42 @@
-package com.rurouni.weatherapp.utils.mapper
+package com.rurouni.weatherapp.utils
 
 import com.rurouni.weatherapp.data.source.remote.model.Forecast
+import com.rurouni.weatherapp.data.source.remote.model.Forecastday
 import com.rurouni.weatherapp.data.source.remote.model.Location
 import com.rurouni.weatherapp.data.source.remote.model.getTime
+import com.rurouni.weatherapp.ui.model.ForecastDayItem
 import com.rurouni.weatherapp.ui.model.HourlyItem
 
-object ForecastToHourlyList {
+object ListConverters {
+
+    private fun indexToDayLabel(index : Int, forecastDay: Forecastday) : String {
+        return when (index) {
+            0 -> {
+                "Yesterday"
+            }
+            1 -> {
+                "Today"
+            }
+            2 -> {
+                "Tomorrow"
+            }
+            else -> {
+                DateOps.dateToWeeklyDay(forecastDay.date)
+            }
+        }
+    }
+
+    fun forecastToDayItem(forecast: Forecast): List<ForecastDayItem> {
+        val list = ArrayList<ForecastDayItem>()
+
+        forecast.forecastday.forEachIndexed { index, forecastday ->
+            val item = ForecastDayItem(indexToDayLabel(index, forecastday), forecastday.day.condition.code.toString(), forecastday.day.maxtemp_c.toString(), forecastday.day.mintemp_c.toString(), forecastday.day.daily_chance_of_rain)
+            list.add(item)
+        }
+
+        return list
+    }
+
     private fun findStartingHourIndex(location: Location): Int {
         val time = location.getTime().split(":")
 
@@ -18,8 +49,7 @@ object ForecastToHourlyList {
         return -1
     }
 
-
-    operator fun invoke(location: Location, forecast: Forecast): List<HourlyItem> {
+    fun forecastToHourlyItem(location: Location, forecast: Forecast): List<HourlyItem> {
         var startingIndex = findStartingHourIndex(location)
         val list = ArrayList<HourlyItem>()
 
@@ -47,4 +77,7 @@ object ForecastToHourlyList {
 
         return list
     }
+
+
+
 }

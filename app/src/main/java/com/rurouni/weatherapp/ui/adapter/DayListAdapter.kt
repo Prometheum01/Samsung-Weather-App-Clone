@@ -1,10 +1,12 @@
 package com.rurouni.weatherapp.ui.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.rurouni.weatherapp.R
+import com.rurouni.weatherapp.data.source.remote.model.Forecast
 import com.rurouni.weatherapp.databinding.DayItemBinding
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateImageViewTintColorChange
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateTextColorChange
@@ -35,16 +37,29 @@ class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val binding = holder.binding
 
+        if (position == 0) {
+            binding.imgRainPercentage.visibility = View.GONE
+            binding.tvRainPercentage.visibility = View.GONE
+            binding.imgCondition.visibility = View.GONE
+        }
+
         if (isAnimate) {
-            animateTextColorChange(binding.tvDay, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
-            animateTextColorChange(binding.tvHighTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
-            animateTextColorChange(binding.tvLowTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
-            animateTextColorChange(binding.tvRainPercentage, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
-            animateImageViewTintColorChange(binding.imgRainPercentage, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
-            animateImageViewTintColorChange(binding.imgCondition, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary).doOnEnd {
-                isAnimate = false
-                setColorState(nextColorState)
+            if (position == 0) {
+                animateTextColorChange(binding.tvDay, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
+                animateTextColorChange(binding.tvHighTemperature, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
+                animateTextColorChange(binding.tvLowTemperature, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
+            }else{
+                animateTextColorChange(binding.tvDay, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
+                animateTextColorChange(binding.tvHighTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
+                animateTextColorChange(binding.tvLowTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
+                animateTextColorChange(binding.tvRainPercentage, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
+                animateImageViewTintColorChange(binding.imgRainPercentage, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
+                animateImageViewTintColorChange(binding.imgCondition, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary).doOnEnd {
+                    isAnimate = false
+                    setColorState(nextColorState)
+                }
             }
+
         }
 
         binding.tvDay.text = list[position].day
@@ -76,12 +91,18 @@ class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
         }
 
         if (!isAnimate) {
-            binding.tvDay.setTextColor(colorState.currentPalette.onPrimary)
-            binding.tvHighTemperature.setTextColor(colorState.currentPalette.onPrimary)
-            binding.tvLowTemperature.setTextColor(colorState.currentPalette.onPrimary)
-            binding.tvRainPercentage.setTextColor(colorState.currentPalette.onSecondary)
-            binding.imgCondition.setColorFilter(colorState.currentPalette.onPrimary)
-            binding.imgRainPercentage.setColorFilter(colorState.currentPalette.onPrimary)
+            if (position == 0) {
+                binding.tvDay.setTextColor(colorState.currentPalette.onSecondary)
+                binding.tvHighTemperature.setTextColor(colorState.currentPalette.onSecondary)
+                binding.tvLowTemperature.setTextColor(colorState.currentPalette.onSecondary)
+            }else {
+                binding.tvDay.setTextColor(colorState.currentPalette.onPrimary)
+                binding.tvHighTemperature.setTextColor(colorState.currentPalette.onPrimary)
+                binding.tvLowTemperature.setTextColor(colorState.currentPalette.onPrimary)
+                binding.tvRainPercentage.setTextColor(colorState.currentPalette.onSecondary)
+                binding.imgCondition.setColorFilter(colorState.currentPalette.onPrimary)
+                binding.imgRainPercentage.setColorFilter(colorState.currentPalette.onPrimary)
+            }
         }
     }
 

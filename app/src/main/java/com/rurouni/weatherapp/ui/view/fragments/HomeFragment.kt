@@ -9,11 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
+import com.rurouni.weatherapp.data.source.remote.model.Forecast
 import com.rurouni.weatherapp.data.source.remote.model.ForecastWeather
 import com.rurouni.weatherapp.databinding.FragmentHomeBinding
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation
-import com.rurouni.weatherapp.utils.mapper.ForecastToDayItemList
-import com.rurouni.weatherapp.utils.mapper.ForecastToHourlyList
 import com.rurouni.weatherapp.ui.adapter.DayListAdapter
 import com.rurouni.weatherapp.ui.adapter.HourlyListAdapter
 import com.rurouni.weatherapp.ui.model.ColorPalette
@@ -21,6 +20,7 @@ import com.rurouni.weatherapp.ui.model.ColorState
 import com.rurouni.weatherapp.ui.model.ColorTheme
 import com.rurouni.weatherapp.ui.view_model.HomeViewModel
 import com.rurouni.weatherapp.utils.ApiResultHandler
+import com.rurouni.weatherapp.utils.ListConverters
 import com.rurouni.weatherapp.utils.Utils
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -63,19 +63,15 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initHourlyRecyclerView()
-        initDayRecyclerView()
+        initRecyclerViews()
 
         getForecast()
         observeForecastData()
     }
 
-    private fun initHourlyRecyclerView() {
+    private fun initRecyclerViews() {
         binding.rwHours.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rwHours.adapter = hourlyListAdapter
-    }
-
-    private fun initDayRecyclerView() {
         binding.rwDays.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rwDays.adapter = dayListAdapter
     }
@@ -90,54 +86,64 @@ class HomeFragment : Fragment() {
 
     private fun observeForecastData() {
         try {
-            homeViewModel.response.observe(viewLifecycleOwner) { response ->
+            homeViewModel.currentForecast.observe(viewLifecycleOwner) { response ->
                 val apiResultHandler = ApiResultHandler<ForecastWeather>(requireContext(),
                     onLoading = {
-                        // Show Progress
-                        binding.loadingBar.visibility = View.VISIBLE
+                        onLoading()
                     },
                     onSuccess = { data ->
-
-                        data?.let {
-                            binding.loadingBar.visibility = View.INVISIBLE
-                            binding.tvCurrentTemperature.text = "${it.current?.temp_c}°"
-                            binding.tvDetailTemperature.text = "${it.forecast.forecastday.first().day.maxtemp_c}° / ${it.forecast.forecastday.first().day.mintemp_c}°, Feels like ${it.current.feelslike_c}°"
-                            binding.tvCurrentLocation.text = "${it.location.name}, ${it.location.country}"
-                            binding.tvCondition.text = it.current.condition.text
-
-                            binding.tvCollapseCurrentTemp.text = "${it.current?.temp_c}°"
-                            binding.tvCollapseDetailTemp.text = "${it.forecast.forecastday.first().day.maxtemp_c}° / ${it.forecast.forecastday.first().day.mintemp_c}°"
-                            binding.tvCollapseCondition.text =  it.current.condition.text
-
-                            binding.tvUvValue.text = it.current.uv.toString()
-                            binding.tvHumidityValue.text = "%${it.current.humidity}"
-                            binding.tvWindValue.text = "${it.current.wind_kph} kph"
-                            binding.tvSunriseValue.text = it.forecast.forecastday.first().astro.sunrise
-                            binding.tvSunsetValue.text = it.forecast.forecastday.first().astro.sunset
-
-                            val code = Utils.codeToIconId(requireContext(), it.current.condition.code)
-                            code?.let {
-                                binding.imgCurrentCondition.setImageResource(it)
-                                binding.imgCollapseCondition.setImageResource(it)
-                            }
-
-                            val hourlyItemList = ForecastToHourlyList(it.location, it.forecast)
-                            hourlyListAdapter.setList(hourlyItemList)
-                            hourlyListAdapter.setColorState(mainState)
-
-                            val dayItemList = ForecastToDayItemList().invoke(it.forecast)
-                            dayListAdapter.setList(dayItemList)
-                            dayListAdapter.setColorState(mainState)
-                        }
+                        onSuccess(data)
                     },
                     onFailure = {
-                        binding.loadingBar.visibility = View.INVISIBLE
+                        onFailure()
                     })
                 apiResultHandler.handleApiResult(response)
             }
         } catch (e: Exception) {
             e.stackTrace
         }
+    }
+
+    private fun onLoading() {
+        binding.loadingBar.visibility = View.VISIBLE
+    }
+
+    private fun onSuccess(data : ForecastWeather?) {
+        data?.let {
+            binding.loadingBar.visibility = View.INVISIBLE
+            binding.tvCurrentTemperature.text = "${it.current?.temp_c}°"
+            binding.tvDetailTemperature.text = "${it.forecast.forecastday.first().day.maxtemp_c}° / ${it.forecast.forecastday.first().day.mintemp_c}°, Feels like ${it.current.feelslike_c}°"
+            binding.tvCurrentLocation.text = "${it.location.name}, ${it.location.country}"
+            binding.tvCondition.text = it.current.condition.text
+
+            binding.tvCollapseCurrentTemp.text = "${it.current?.temp_c}°"
+            binding.tvCollapseDetailTemp.text = "${it.forecast.forecastday.first().day.maxtemp_c}° / ${it.forecast.forecastday.first().day.mintemp_c}°"
+            binding.tvCollapseCondition.text =  it.current.condition.text
+
+            binding.tvUvValue.text = it.current.uv.toString()
+            binding.tvHumidityValue.text = "%${it.current.humidity}"
+            binding.tvWindValue.text = "${it.current.wind_kph} kph"
+            binding.tvSunriseValue.text = it.forecast.forecastday.first().astro.sunrise
+            binding.tvSunsetValue.text = it.forecast.forecastday.first().astro.sunset
+
+            val code = Utils.codeToIconId(requireContext(), it.current.condition.code)
+            code?.let {
+                binding.imgCurrentCondition.setImageResource(it)
+                binding.imgCollapseCondition.setImageResource(it)
+            }
+
+            val hourlyItemList = ListConverters.forecastToHourlyItem(it.location, it.forecast)
+            hourlyListAdapter.setList(hourlyItemList)
+            hourlyListAdapter.setColorState(mainState)
+
+            val dayItemList = ListConverters.forecastToDayItem(it.forecast)
+            dayListAdapter.setList(dayItemList)
+            dayListAdapter.setColorState(mainState)
+        }
+    }
+
+    private fun onFailure() {
+        binding.loadingBar.visibility = View.INVISIBLE
     }
 
     private fun appBarObserver() {

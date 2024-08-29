@@ -6,25 +6,23 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.rurouni.weatherapp.data.repository.WeatherRepository
 import com.rurouni.weatherapp.data.source.remote.model.ForecastWeather
+import com.rurouni.weatherapp.data.source.remote.model.Forecastday
+import com.rurouni.weatherapp.data.source.remote.model.HistoryWeather
+import com.rurouni.weatherapp.domain.WeeklyForecastUseCase
+import com.rurouni.weatherapp.ui.model.ForecastDayItem
 import com.rurouni.weatherapp.utils.NetWorkResult
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class HomeViewModel @Inject constructor(private val weatherRepository: WeatherRepository) : ViewModel() {
-    private val _response : MutableLiveData<NetWorkResult<ForecastWeather>> = MutableLiveData()
-    val response : LiveData<NetWorkResult<ForecastWeather>> = _response
+class HomeViewModel @Inject constructor(private val weeklyForecastUseCase: WeeklyForecastUseCase) : ViewModel() {
+    private val _currentForecast : MutableLiveData<NetWorkResult<ForecastWeather>> = MutableLiveData()
+    val currentForecast : LiveData<NetWorkResult<ForecastWeather>> = _currentForecast
 
     fun getForecast() = viewModelScope.launch {
-
-        weatherRepository.getRemoteForecast("48.8567,2.3508", "en", "3").collect {values ->
-
-            _response.value = values
-
+        weeklyForecastUseCase().collect { result ->
+            _currentForecast.value = result
         }
-
     }
-
-
 }
