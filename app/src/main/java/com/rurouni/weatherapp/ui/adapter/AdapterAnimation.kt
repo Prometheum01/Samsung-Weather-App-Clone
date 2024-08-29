@@ -9,7 +9,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 
 object AdapterAnimation {
-    private val duration = 500L
+    val duration = 500L
 
     fun animateTextColorChange(textView: TextView, fromColor: Int, toColor: Int) : ObjectAnimator {
         val colorAnimation = ObjectAnimator.ofArgb(textView, "textColor", fromColor, toColor)

@@ -19,6 +19,4 @@ class ApiResultHandler<T>(private val context: Context, private val onLoading: (
             }
         }
     }
-
-
 }

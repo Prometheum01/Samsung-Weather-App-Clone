@@ -65,7 +65,8 @@ object ListConverters {
                         HourlyItem(
                             hour.getTime(),
                             hour.condition.code.toString(),
-                            hour.temp_c.toString()
+                            hour.temp_c.toFloat(),
+                            hour.chance_of_rain
                         )
                     )
                     counter--
