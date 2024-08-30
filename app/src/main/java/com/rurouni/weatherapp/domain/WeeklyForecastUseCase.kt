@@ -13,12 +13,11 @@ import javax.inject.Inject
 class WeeklyForecastUseCase @Inject constructor(
     private val weatherRepository: WeatherRepository
 ) {
-    operator fun invoke(): Flow<NetWorkResult<ForecastWeather>> = flow {
-        val today = DateOps.getSystemDate(0)
+    operator fun invoke(location : String, language : String, days: Int): Flow<NetWorkResult<ForecastWeather>> = flow {
         val yesterday = DateOps.getSystemDate(-1)
         val forecastDayLimit = 3
-        val forecastFlow = weatherRepository.getRemoteForecast("48.8567, 2.3508", "en", forecastDayLimit.toString(), null)
-        val historicForecastFlow = weatherRepository.getRemoteHistoricForecast("48.8567, 2.3508", "en", yesterday)
+        val forecastFlow = weatherRepository.getRemoteForecast(location, language, forecastDayLimit.toString(), null)
+        val historicForecastFlow = weatherRepository.getRemoteHistoricForecast(location, language, yesterday)
 
         var currentForecast: ForecastWeather? = null
         var historicForecast: HistoryWeather? = null
@@ -49,7 +48,7 @@ class WeeklyForecastUseCase @Inject constructor(
             for (i in (forecastDayLimit)..6) {
                 val dt = DateOps.getSystemDate(i)
 
-                val request = weatherRepository.getRemoteForecast("48.8567, 2.3508", "en", "3",dt )
+                val request = weatherRepository.getRemoteForecast(location, language, days.toString(), dt)
 
                 request.collect { result ->
                     if (result is NetWorkResult.Success) {

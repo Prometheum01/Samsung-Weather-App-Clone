@@ -20,9 +20,9 @@ class HomeViewModel @Inject constructor(private val weeklyForecastUseCase: Weekl
     private val _currentForecast : MutableLiveData<NetWorkResult<ForecastWeather>> = MutableLiveData()
     val currentForecast : LiveData<NetWorkResult<ForecastWeather>> = _currentForecast
 
-    fun getForecast() = viewModelScope.launch {
-        weeklyForecastUseCase().collect { result ->
-            _currentForecast.value = result
+    fun getForecast(location : String) = viewModelScope.launch {
+        weeklyForecastUseCase(location, "en", 3).collect { result ->
+            _currentForecast.postValue(result)
         }
     }
 }

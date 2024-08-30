@@ -2,6 +2,7 @@ package com.rurouni.weatherapp.utils
 
 import android.app.AlertDialog
 import android.content.Context
+import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import androidx.core.content.ContextCompat
@@ -53,5 +54,9 @@ object Utils {
 
     fun getColor(context: Context, colorResId: Int): Int {
         return ContextCompat.getColor(context, colorResId)
+    }
+
+    fun Location.toApiFormat() : String {
+        return "${latitude}, ${longitude}"
     }
 }

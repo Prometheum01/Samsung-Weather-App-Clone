@@ -6,12 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
-import com.rurouni.weatherapp.data.source.remote.model.Forecast
 import com.rurouni.weatherapp.data.source.remote.model.ForecastWeather
 import com.rurouni.weatherapp.databinding.FragmentHomeBinding
+import com.rurouni.weatherapp.service.location.LocationPreferences
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation
 import com.rurouni.weatherapp.ui.adapter.DayListAdapter
 import com.rurouni.weatherapp.ui.adapter.HourlyListAdapter
@@ -22,11 +22,15 @@ import com.rurouni.weatherapp.ui.view_model.HomeViewModel
 import com.rurouni.weatherapp.utils.ApiResultHandler
 import com.rurouni.weatherapp.utils.ListConverters
 import com.rurouni.weatherapp.utils.Utils
+import com.rurouni.weatherapp.utils.Utils.toApiFormat
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    private val homeViewModel: HomeViewModel by viewModels()
+    @Inject lateinit var locationPreferences : LocationPreferences
+
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -34,18 +38,12 @@ class HomeFragment : Fragment() {
     val hourlyListAdapter: HourlyListAdapter by lazy {
         HourlyListAdapter(binding.rwHours)
     }
-
     val dayListAdapter: DayListAdapter by lazy {
         DayListAdapter()
     }
 
     private lateinit var mainState : ColorState
     private lateinit var systemState : ColorState
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -58,35 +56,30 @@ class HomeFragment : Fragment() {
         systemState = ColorState(ColorPalette.systemPalette(requireContext()), ColorPalette.mainPalette(requireContext()), ColorTheme.SYSTEM)
 
         appBarObserver()
+        firstForecast()
+
         return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initRecyclerViews()
-
-        getForecast()
         observeForecastData()
     }
 
-    private fun initRecyclerViews() {
-        binding.rwHours.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        binding.rwHours.adapter = hourlyListAdapter
-        binding.rwDays.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-        binding.rwDays.adapter = dayListAdapter
-    }
-
-    private fun getForecast() {
-        try {
-             homeViewModel.getForecast()
-        } catch (e: Exception) {
-            e.stackTrace
+    private fun firstForecast() {
+        locationPreferences.getSavedLocation()?.let {
+            try {
+                homeViewModel.getForecast(it.toApiFormat())
+            } catch (e: Exception) {
+                e.stackTrace
+            }
         }
     }
 
     private fun observeForecastData() {
         try {
-            homeViewModel.currentForecast.observe(viewLifecycleOwner) { response ->
+            homeViewModel.currentForecast.observe(requireActivity()) { response ->
                 val apiResultHandler = ApiResultHandler<ForecastWeather>(requireContext(),
                     onLoading = {
                         onLoading()
@@ -111,9 +104,10 @@ class HomeFragment : Fragment() {
     private fun onSuccess(data : ForecastWeather?) {
         data?.let {
             binding.loadingBar.visibility = View.INVISIBLE
+
             binding.tvCurrentTemperature.text = "${it.current?.temp_c}°"
-            binding.tvDetailTemperature.text = "${it.forecast.forecastday.first().day.maxtemp_c}° / ${it.forecast.forecastday.first().day.mintemp_c}°, Feels like ${it.current.feelslike_c}°"
-            binding.tvCurrentLocation.text = "${it.location.name}, ${it.location.country}"
+            binding.tvDetailTemperature.text = "${it.forecast.forecastday.first().day.maxtemp_c}° / ${it.forecast.forecastday.first().day.mintemp_c}°, feels like ${it.current.feelslike_c}°"
+            binding.tvCurrentLocation.text = "${it.location.name}"
             binding.tvCondition.text = it.current.condition.text
 
             binding.tvCollapseCurrentTemp.text = "${it.current?.temp_c}°"
@@ -144,6 +138,13 @@ class HomeFragment : Fragment() {
 
     private fun onFailure() {
         binding.loadingBar.visibility = View.INVISIBLE
+    }
+
+    private fun initRecyclerViews() {
+        binding.rwHours.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        binding.rwHours.adapter = hourlyListAdapter
+        binding.rwDays.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
+        binding.rwDays.adapter = dayListAdapter
     }
 
     private fun appBarObserver() {
