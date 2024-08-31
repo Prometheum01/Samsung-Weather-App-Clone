@@ -1,6 +1,5 @@
 package com.rurouni.weatherapp.ui.view.fragments
 
-import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -161,11 +160,6 @@ class HomeFragment : Fragment() {
                     changePalette(mainState, systemState)
                     animateFlag = true
                 }
-                if (progress >= 1.0) {
-                    toolbarContent.setBackgroundColor(systemState.currentPalette.primary)
-                }else if (progress <= 0.9) {
-                    toolbarContent.setBackgroundColor(Color.TRANSPARENT)
-                }
             }
             else {
                 if (animateFlag) {
@@ -179,6 +173,8 @@ class HomeFragment : Fragment() {
     private fun changePalette(current: ColorState, next : ColorState) {
         with(current) {
             AdapterAnimation.animateBackgroundColor(binding.homeFragment, currentPalette.primary, nextPalette.primary)
+            AdapterAnimation.animateBackgroundColor(binding.layoutToolbar, currentPalette.primary, nextPalette.primary)
+            AdapterAnimation.animateImageViewTintColorChange(binding.imgSettings, currentPalette.onPrimary, nextPalette.onPrimary)
 
             //Cards
             AdapterAnimation.animateCardViewBackgroundColor(binding.cardHourlyList, currentPalette.secondary, nextPalette.secondary)

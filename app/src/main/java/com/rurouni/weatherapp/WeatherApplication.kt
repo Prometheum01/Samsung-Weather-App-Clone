@@ -6,14 +6,15 @@ import dagger.hilt.android.HiltAndroidApp
 @HiltAndroidApp
 class WeatherApplication : Application()
 
-
-
-//Location otomatik acilmiyor onu duzelt
-//Location yoksa simgeyi duzelt
 //pull to refresh ekle
-//temanin en tepesindeki action bar renklerini duzelt
+//Location yoksa simgeyi duzelt
 
-//Location sistemini entegre et
 //iconlari renkli ikonlarla degistir
 //Lottie animasyonlari ekle
+
+//Ui duzenle:
+    //expanded ve collapse modda textler uzuyor, ayrica collapse modda image kuculuyor
+    //Gunluk listede bazen duzen bozuluyor ona bak
+    //En asagiya polen vb degerleri ekle
+
 //Room veritabani ekle

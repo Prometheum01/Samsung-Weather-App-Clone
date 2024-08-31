@@ -4,6 +4,8 @@ plugins {
     id("androidx.navigation.safeargs")
     id("kotlin-kapt")
     id("com.google.dagger.hilt.android")
+    id("androidx.room")
+
 }
 
 android {
@@ -39,6 +41,10 @@ android {
     buildFeatures {
         viewBinding = true
     }
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 }
 
 dependencies {
@@ -54,6 +60,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+
+    //Room
+    implementation(libs.androidx.room.runtime)
+    annotationProcessor(libs.androidx.room.compiler)
+    kapt(libs.androidx.room.room.compiler)
+    implementation(libs.androidx.room.ktx)
 
     //Network
     implementation (libs.retrofit)
@@ -71,7 +83,6 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
-
     //DI
     implementation(libs.hilt.android)
     kapt(libs.hilt.android.compiler)
@@ -80,13 +91,6 @@ dependencies {
     implementation(libs.lottie)
     implementation (libs.sdp.android)
     implementation (libs.ssp.android)
-
-
-    //Reflection
-    implementation(libs.kotlin.reflect)
-
-    //SwipeRefreshlayout
-    implementation(libs.androidx.swiperefreshlayout)
 }
 kapt {
     correctErrorTypes = true
