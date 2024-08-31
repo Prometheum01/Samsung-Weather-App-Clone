@@ -1,5 +1,7 @@
 package com.rurouni.weatherapp.data.source.remote.model
 
+import java.io.Serializable
+
 data class Day(
     val avghumidity: Int,
     val avgtemp_c: Double,
@@ -21,4 +23,4 @@ data class Day(
     val totalprecip_mm: Double,
     val totalsnow_cm: Double,
     val uv: Double
-)
+) : Serializable

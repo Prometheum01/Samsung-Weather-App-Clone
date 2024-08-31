@@ -5,7 +5,10 @@ import android.content.Context
 import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
+import android.os.Bundle
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import com.rurouni.weatherapp.R
 
 object Utils {
@@ -58,5 +61,11 @@ object Utils {
 
     fun Location.toApiFormat() : String {
         return "${latitude}, ${longitude}"
+    }
+
+    fun NavController.safeNavigateWithArgs(direction: NavDirections, bundle: Bundle?) {
+        currentDestination?.getAction(direction.actionId)?.run {
+            navigate(direction.actionId, bundle)
+        }
     }
 }

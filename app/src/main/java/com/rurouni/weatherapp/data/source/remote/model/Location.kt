@@ -1,5 +1,7 @@
 package com.rurouni.weatherapp.data.source.remote.model
 
+import java.io.Serializable
+
 data class Location(
     val country: String,
     val lat: Double,
@@ -9,7 +11,7 @@ data class Location(
     val name: String,
     val region: String,
     val tz_id: String
-)
+) : Serializable
 
 
 fun Location.getTime() : String {

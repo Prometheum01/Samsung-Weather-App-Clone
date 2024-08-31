@@ -1,5 +1,7 @@
 package com.rurouni.weatherapp.data.source.remote.model
 
+import java.io.Serializable
+
 data class Astro(
     val is_moon_up: Int,
     val is_sun_up: Int,
@@ -9,4 +11,4 @@ data class Astro(
     val moonset: String,
     val sunrise: String,
     val sunset: String
-)
+) : Serializable

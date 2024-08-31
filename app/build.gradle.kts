@@ -55,36 +55,38 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    //Network
     implementation (libs.retrofit)
     implementation (libs.converter.gson)
     implementation (libs.logging.interceptor)
     implementation (libs.converter.scalars)
 
+    //View Model Coroutines
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.kotlinx.coroutines.core)
-
     implementation(libs.androidx.lifecycle.viewmodel.ktx)
     implementation(libs.androidx.lifecycle.livedata.ktx)
 
+    //Navigation
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
 
+
+    //DI
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    //UI
+    implementation(libs.lottie)
     implementation (libs.sdp.android)
     implementation (libs.ssp.android)
 
-    implementation (libs.picasso)
 
     //Reflection
     implementation(libs.kotlin.reflect)
 
     //SwipeRefreshlayout
     implementation(libs.androidx.swiperefreshlayout)
-
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-
-    implementation(libs.shimmer)
-
 }
 kapt {
     correctErrorTypes = true

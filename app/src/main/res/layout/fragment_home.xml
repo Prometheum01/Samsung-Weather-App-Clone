@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/layout_main"
+    android:id="@+id/homeFragment"
     android:background="@color/primaryMain"
     tools:context=".ui.view.fragments.HomeFragment">
 
@@ -39,7 +39,6 @@
                     android:layout_width="@dimen/_96sdp"
                     android:layout_height="@dimen/_96sdp"
                     android:layout_marginHorizontal="@dimen/_16sdp"
-                    android:src="@drawable/ic_1000"
                     app:layout_constraintBottom_toBottomOf="@+id/layout_general_info"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/layout_general_info"
@@ -60,7 +59,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_semibold"
-                        android:text="22°"
                         android:textColor="@color/onPrimaryMain"
                         android:textSize="@dimen/_48sdp" />
 
@@ -69,7 +67,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_regular"
-                        android:text="Partly cloud"
                         android:textColor="@color/onPrimaryMain"
                         android:textSize="@dimen/_24sdp" />
 
@@ -85,7 +82,6 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:fontFamily="@font/nunito_regular"
-                            android:text="Paris, France"
                             android:textColor="@color/onPrimaryMain"
                             android:textSize="@dimen/_14sdp" />
 
@@ -102,7 +98,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/nunito_regular"
-                        android:text="32° / 16°, Feels like 24°"
                         android:textColor="@color/onPrimaryMain"
                         android:textSize="@dimen/_10sdp" />
 
@@ -127,7 +122,6 @@
                         android:layout_marginStart="@dimen/_4sdp"
                         android:id="@+id/tv_collapse_current_temp"
                         android:fontFamily="@font/nunito_semibold"
-                        android:text="22°"
                         android:textColor="@color/onPrimarySystem"
                         android:textSize="@dimen/_48sdp"
                         android:layout_width="wrap_content"
@@ -143,7 +137,6 @@
                         <TextView
                             android:id="@+id/tv_collapse_detail_temp"
                             android:fontFamily="@font/nunito_semibold"
-                            android:text="32° / 16°"
                             android:textColor="@color/onPrimarySystem"
                             android:textSize="@dimen/_10sdp"
                             android:layout_width="wrap_content"
@@ -152,7 +145,6 @@
                         <TextView
                             android:id="@+id/tv_collapse_condition"
                             android:fontFamily="@font/nunito_semibold"
-                            android:text="Partly cloud"
                             android:textColor="@color/onPrimarySystem"
                             android:textSize="@dimen/_18sdp"
                             android:layout_width="wrap_content"
@@ -164,7 +156,6 @@
                         android:id="@+id/img_collapse_condition"
                         android:layout_weight="1"
                         android:layout_gravity="center"
-                        android:src="@drawable/ic_1000"
                         android:layout_width="0dp"
                         android:layout_height="@dimen/_36sdp"
                         app:tint="@color/onPrimarySystem" />

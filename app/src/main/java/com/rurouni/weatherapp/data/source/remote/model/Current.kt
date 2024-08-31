@@ -1,5 +1,7 @@
 package com.rurouni.weatherapp.data.source.remote.model
 
+import java.io.Serializable
+
 data class Current(
     val cloud: Int,
     val condition: Condition,
@@ -30,4 +32,4 @@ data class Current(
     val wind_mph: Double,
     val windchill_c: Double,
     val windchill_f: Double
-)
+) : Serializable

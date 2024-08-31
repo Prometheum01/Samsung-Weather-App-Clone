@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.rurouni.weatherapp.data.source.remote.model.ForecastWeather
@@ -22,7 +23,6 @@ import com.rurouni.weatherapp.ui.view_model.HomeViewModel
 import com.rurouni.weatherapp.utils.ApiResultHandler
 import com.rurouni.weatherapp.utils.ListConverters
 import com.rurouni.weatherapp.utils.Utils
-import com.rurouni.weatherapp.utils.Utils.toApiFormat
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var mainState : ColorState
     private lateinit var systemState : ColorState
+    private val args: HomeFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -56,7 +57,7 @@ class HomeFragment : Fragment() {
         systemState = ColorState(ColorPalette.systemPalette(requireContext()), ColorPalette.mainPalette(requireContext()), ColorTheme.SYSTEM)
 
         appBarObserver()
-        firstForecast()
+        initCachedData(args.data)
 
         return view
     }
@@ -67,14 +68,8 @@ class HomeFragment : Fragment() {
         observeForecastData()
     }
 
-    private fun firstForecast() {
-        locationPreferences.getSavedLocation()?.let {
-            try {
-                homeViewModel.getForecast(it.toApiFormat())
-            } catch (e: Exception) {
-                e.stackTrace
-            }
-        }
+    private fun initCachedData(cachedData : ForecastWeather) {
+        onSuccess(cachedData)
     }
 
     private fun observeForecastData() {
@@ -183,7 +178,7 @@ class HomeFragment : Fragment() {
 
     private fun changePalette(current: ColorState, next : ColorState) {
         with(current) {
-            AdapterAnimation.animateBackgroundColor(binding.layoutMain, currentPalette.primary, nextPalette.primary)
+            AdapterAnimation.animateBackgroundColor(binding.homeFragment, currentPalette.primary, nextPalette.primary)
 
             //Cards
             AdapterAnimation.animateCardViewBackgroundColor(binding.cardHourlyList, currentPalette.secondary, nextPalette.secondary)

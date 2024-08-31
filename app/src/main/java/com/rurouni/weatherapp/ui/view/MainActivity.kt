@@ -16,6 +16,8 @@ import com.google.android.gms.location.Priority
 import com.rurouni.weatherapp.databinding.ActivityMainBinding
 import com.rurouni.weatherapp.service.location.LocationPreferences
 import com.rurouni.weatherapp.ui.permission.PermissionHandler
+import com.rurouni.weatherapp.ui.view.components.CustomSnackbar
+import com.rurouni.weatherapp.ui.view.components.Messages
 import com.rurouni.weatherapp.ui.view_model.HomeViewModel
 import com.rurouni.weatherapp.ui.view_model.LocationViewModel
 import com.rurouni.weatherapp.utils.Utils.toApiFormat
@@ -41,8 +43,7 @@ class MainActivity : AppCompatActivity() {
             if (isGranted) {
                 locationViewModel.openLocationService(this)
             } else {
-                // İzin reddedildi
-                //TODO
+                Messages.noLocationPermissionMessage(this)
             }
         }
 
@@ -51,28 +52,33 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         setContentView(view)
-
         setStatusBarTheme()
 
-        initAndCheckPermission()
-
+        checkPermission()
         observeLocationAndForecast()
     }
 
-    fun initAndCheckPermission() {
+    private fun checkPermission() {
         permissionHandler = PermissionHandler(this)
 
         permissionHandler.checkPermission(
             android.Manifest.permission.ACCESS_FINE_LOCATION,
-            requestPermissionLauncher
-        ) {
-            locationViewModel.openLocationService(this)
-        }
+            requestPermissionLauncher,
+            onRationale = {
+                CustomSnackbar.showActionSnackbar(binding.root, "We have to know your location to show weather data for you", "Give Permission", action = {
+                    requestPermissionLauncher.launch(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                })
+            },
+            onPermissionGranted = {
+                locationViewModel.openLocationService(this)
+            }
+        )
     }
 
-    fun observeLocationAndForecast() {
+    private fun observeLocationAndForecast() {
         try {
             locationViewModel.currentLocation.observe(this) { location ->
+                println("Tag123: call")
                 getForecast(location.toApiFormat())
             }
         } catch (e: Exception) {
@@ -80,7 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getForecast(location : String) {
+    private fun getForecast(location: String) {
         try {
             homeViewModel.getForecast(location)
         } catch (e: Exception) {
@@ -97,6 +103,14 @@ class MainActivity : AppCompatActivity() {
                 .setMaxUpdateDelayMillis(10000)
                 .build()
             locationViewModel.getCurrentLocation(locationRequest)
+        } else {
+            if (locationPreferences.getSavedLocation() != null) {
+                getForecast(locationPreferences.getSavedLocation()!!.toApiFormat())
+            } else {
+                Messages.openLocationMessage(binding.root) {
+                    locationViewModel.openLocationService(this)
+                }
+            }
         }
     }
 
