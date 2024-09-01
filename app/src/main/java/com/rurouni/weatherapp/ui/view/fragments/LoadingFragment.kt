@@ -6,19 +6,24 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import com.rurouni.weatherapp.data.source.remote.model.ForecastWeather
+import com.rurouni.weatherapp.data.source.model.ForecastWeather
 import com.rurouni.weatherapp.databinding.FragmentLoadingBinding
 import com.rurouni.weatherapp.ui.view.components.Messages
 import com.rurouni.weatherapp.ui.view_model.HomeViewModel
+import com.rurouni.weatherapp.ui.view_model.LoadingViewModel
 import com.rurouni.weatherapp.utils.ApiResultHandler
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class LoadingFragment : Fragment() {
     //Binding
     private var _binding: FragmentLoadingBinding? = null
     private val binding get() = _binding!!
 
     private val homeViewModel: HomeViewModel by activityViewModels()
+    private val loadingViewModel : LoadingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,16 +36,21 @@ class LoadingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        checkHasCachedData()
+        observeSavedData()
+        observeForecastData()
+        loadingViewModel.checkHasSavedData()
     }
 
-    private fun checkHasCachedData() {
-        val hasData = false
+    private fun observeSavedData() {
+        loadingViewModel.savedData.observe(viewLifecycleOwner) {
+            navigateHome(it)
+        }
+    }
 
-        if (hasData) {
-            //TODO:Navigate Home Fragment
-        }else {
-            observeForecastData()
+    private fun navigateHome(forecastWeather: ForecastWeather) {
+        if (findNavController().currentDestination?.label != "fragment_home") {
+            val action = LoadingFragmentDirections.actionLoadingFragmentToHomeFragment(forecastWeather)
+            findNavController().navigate(action)
         }
     }
 
@@ -52,12 +62,7 @@ class LoadingFragment : Fragment() {
 
                     },
                     onSuccess = { data ->
-                        //TODO:Save Room
-                        //TODO:Navigate Home
-                        if (findNavController().currentDestination?.label != "fragment_home") {
-                            val action = LoadingFragmentDirections.actionLoadingFragmentToHomeFragment(data!!)
-                            findNavController().navigate(action)
-                        }
+                        navigateHome(data!!)
                     },
                     onFailure = {
                         Messages.noInternetMessage(requireContext())

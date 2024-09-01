@@ -78,7 +78,6 @@ class MainActivity : AppCompatActivity() {
     private fun observeLocationAndForecast() {
         try {
             locationViewModel.currentLocation.observe(this) { location ->
-                println("Tag123: call")
                 getForecast(location.toApiFormat())
             }
         } catch (e: Exception) {

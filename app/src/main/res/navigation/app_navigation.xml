@@ -21,6 +21,6 @@
         tools:layout="@layout/fragment_home" >
         <argument
             android:name="data"
-            app:argType="com.rurouni.weatherapp.data.source.remote.model.ForecastWeather" />
+            app:argType="com.rurouni.weatherapp.data.source.model.ForecastWeather" />
     </fragment>
 </navigation>

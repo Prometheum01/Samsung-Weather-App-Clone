@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.rurouni.weatherapp.R
-import com.rurouni.weatherapp.data.source.remote.model.Forecast
+import com.rurouni.weatherapp.data.source.model.Forecast
 import com.rurouni.weatherapp.databinding.DayItemBinding
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateImageViewTintColorChange
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateTextColorChange

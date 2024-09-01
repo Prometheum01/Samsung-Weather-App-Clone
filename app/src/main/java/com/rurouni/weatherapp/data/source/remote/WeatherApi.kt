@@ -1,7 +1,7 @@
 package com.rurouni.weatherapp.data.source.remote
 
-import com.rurouni.weatherapp.data.source.remote.model.ForecastWeather
-import com.rurouni.weatherapp.data.source.remote.model.HistoryWeather
+import com.rurouni.weatherapp.data.source.model.ForecastWeather
+import com.rurouni.weatherapp.data.source.model.HistoryWeather
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

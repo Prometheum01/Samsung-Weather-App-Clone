@@ -1,9 +1,9 @@
 package com.rurouni.weatherapp.utils
 
-import com.rurouni.weatherapp.data.source.remote.model.Forecast
-import com.rurouni.weatherapp.data.source.remote.model.Forecastday
-import com.rurouni.weatherapp.data.source.remote.model.Location
-import com.rurouni.weatherapp.data.source.remote.model.getTime
+import com.rurouni.weatherapp.data.source.model.Forecast
+import com.rurouni.weatherapp.data.source.model.Forecastday
+import com.rurouni.weatherapp.data.source.model.Location
+import com.rurouni.weatherapp.data.source.model.getTime
 import com.rurouni.weatherapp.ui.model.ForecastDayItem
 import com.rurouni.weatherapp.ui.model.HourlyItem
 

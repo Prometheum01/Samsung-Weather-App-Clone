@@ -1,9 +1,10 @@
 package com.rurouni.weatherapp.domain
 
 import com.rurouni.weatherapp.data.repository.WeatherRepository
-import com.rurouni.weatherapp.data.source.remote.model.ForecastWeather
-import com.rurouni.weatherapp.data.source.remote.model.Forecastday
-import com.rurouni.weatherapp.data.source.remote.model.HistoryWeather
+import com.rurouni.weatherapp.data.source.local.data_sources.WeatherLocalDataSource
+import com.rurouni.weatherapp.data.source.model.ForecastWeather
+import com.rurouni.weatherapp.data.source.model.Forecastday
+import com.rurouni.weatherapp.data.source.model.HistoryWeather
 import com.rurouni.weatherapp.utils.DateOps
 import com.rurouni.weatherapp.utils.NetWorkResult
 import kotlinx.coroutines.flow.Flow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class WeeklyForecastUseCase @Inject constructor(
-    private val weatherRepository: WeatherRepository
+    private val weatherRepository: WeatherRepository,
 ) {
     operator fun invoke(location : String, language : String, days: Int): Flow<NetWorkResult<ForecastWeather>> = flow {
         val yesterday = DateOps.getSystemDate(-1)
@@ -60,6 +61,7 @@ class WeeklyForecastUseCase @Inject constructor(
             }
 
             forecast.forecast.forecastday = newList
+            weatherRepository.saveLocalForecast(forecast)
             emit(NetWorkResult.Success(forecast))
         }
     }

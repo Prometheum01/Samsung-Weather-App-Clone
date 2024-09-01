@@ -9,7 +9,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
-import com.rurouni.weatherapp.data.source.remote.model.ForecastWeather
+import com.rurouni.weatherapp.data.source.model.ForecastWeather
 import com.rurouni.weatherapp.databinding.FragmentHomeBinding
 import com.rurouni.weatherapp.service.location.LocationPreferences
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation
