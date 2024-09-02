@@ -54,7 +54,7 @@
 
                     <LinearLayout
                         android:id="@+id/layout_general_info"
-                        android:layout_width="wrap_content"
+                        android:layout_width="@dimen/_180sdp"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/_16sdp"
                         android:gravity="start"
@@ -66,17 +66,21 @@
                             android:id="@+id/tv_current_temperature"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:fontFamily="@font/nunito_semibold"
                             android:textColor="@color/onPrimaryMain"
                             android:textSize="@dimen/_48sdp" />
 
                         <TextView
                             android:id="@+id/tv_condition"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nunito_regular"
                             android:textColor="@color/onPrimaryMain"
-                            android:textSize="@dimen/_24sdp" />
+                            android:textSize="@dimen/_20sdp" />
 
                         <LinearLayout
                             android:layout_width="wrap_content"
@@ -84,27 +88,33 @@
                             android:layout_gravity="start"
                             android:layout_marginTop="@dimen/_16sdp">
 
+                            <ImageView
+                                android:src="@drawable/ic_location_on"
+                                android:id="@+id/img_location_pin"
+                                android:layout_width="@dimen/_20sdp"
+                                android:layout_height="@dimen/_20sdp"
+                                app:tint="@color/onPrimaryMain" />
+
                             <TextView
                                 android:id="@+id/tv_current_location"
                                 android:layout_width="wrap_content"
+                                android:ellipsize="end"
+                                android:maxLines="1"
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center"
                                 android:fontFamily="@font/nunito_regular"
                                 android:textColor="@color/onPrimaryMain"
                                 android:textSize="@dimen/_14sdp" />
 
-                            <ImageView
-                                android:src="@drawable/ic_location_on"
-                                android:id="@+id/img_location_pin"
-                                android:layout_width="@dimen/_22sdp"
-                                android:layout_height="@dimen/_22sdp"
-                                app:tint="@color/onPrimaryMain" />
+
 
                         </LinearLayout>
 
                         <TextView
                             android:id="@+id/tv_detail_temperature"
                             android:layout_width="wrap_content"
+                            android:ellipsize="end"
+                            android:maxLines="1"
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/nunito_regular"
                             android:textColor="@color/onPrimaryMain"
@@ -119,6 +129,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_100sdp"
                     android:elevation="0dp"
+                    android:visibility="visible"
                     android:forceHasOverlappingRendering="false"
                     app:layout_collapseMode="pin">
 
@@ -127,44 +138,57 @@
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent">
 
-                        <TextView
-                            android:id="@+id/tv_collapse_current_temp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/_4sdp"
-                            android:fontFamily="@font/nunito_semibold"
-                            android:textColor="@color/onPrimarySystem"
-                            android:textSize="@dimen/_48sdp" />
-
                         <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_marginHorizontal="@dimen/_8sdp"
-                            android:orientation="vertical">
+                            android:layout_width="@dimen/_260sdp"
+                            android:layout_height="wrap_content">
 
                             <TextView
-                                android:id="@+id/tv_collapse_detail_temp"
+                                android:ellipsize="end"
+                                android:maxLines="1"
+                                android:id="@+id/tv_collapse_current_temp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/_4sdp"
                                 android:fontFamily="@font/nunito_semibold"
                                 android:textColor="@color/onPrimarySystem"
-                                android:textSize="@dimen/_10sdp" />
+                                android:textSize="@dimen/_48sdp" />
 
-                            <TextView
-                                android:id="@+id/tv_collapse_condition"
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:fontFamily="@font/nunito_semibold"
-                                android:textColor="@color/onPrimarySystem"
-                                android:textSize="@dimen/_18sdp" />
+                                android:layout_gravity="center"
+                                android:layout_marginHorizontal="@dimen/_8sdp"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:id="@+id/tv_collapse_detail_temp"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/nunito_semibold"
+                                    android:textColor="@color/onPrimarySystem"
+                                    android:textSize="@dimen/_10sdp" />
+
+                                <TextView
+                                    android:ellipsize="end"
+                                    android:maxLines="1"
+                                    android:id="@+id/tv_collapse_condition"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/nunito_semibold"
+                                    android:textColor="@color/onPrimarySystem"
+                                    android:textSize="@dimen/_16sdp" />
+
+                            </LinearLayout>
 
                         </LinearLayout>
 
                         <ImageView
                             android:id="@+id/img_collapse_condition"
-                            android:layout_width="0dp"
+                            android:layout_width="@dimen/_36sdp"
                             android:layout_height="@dimen/_36sdp"
+                            android:layout_marginRight="@dimen/_8sdp"
                             android:layout_gravity="center"
                             android:layout_weight="1"
                             app:tint="@color/onPrimarySystem" />
