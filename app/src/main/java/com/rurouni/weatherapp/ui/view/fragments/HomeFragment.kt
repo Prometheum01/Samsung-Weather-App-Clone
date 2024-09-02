@@ -22,6 +22,7 @@ import com.rurouni.weatherapp.ui.view_model.HomeViewModel
 import com.rurouni.weatherapp.utils.ApiResultHandler
 import com.rurouni.weatherapp.utils.ListConverters
 import com.rurouni.weatherapp.utils.Utils
+import com.rurouni.weatherapp.utils.Utils.toApiFormat
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -52,6 +53,7 @@ class HomeFragment : Fragment() {
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val view = binding.root
 
+        initViews()
         mainState = ColorState(ColorPalette.mainPalette(requireContext()), ColorPalette.systemPalette(requireContext()), ColorTheme.MAIN)
         systemState = ColorState(ColorPalette.systemPalette(requireContext()), ColorPalette.mainPalette(requireContext()), ColorTheme.SYSTEM)
 
@@ -63,12 +65,22 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initRecyclerViews()
+        initViews()
         observeForecastData()
     }
 
     private fun initCachedData(cachedData : ForecastWeather) {
         onSuccess(cachedData)
+    }
+
+    private fun refresh() {
+        try {
+            locationPreferences.getSavedLocation()?.let {
+                homeViewModel.getForecast(it.toApiFormat())
+            }
+        } catch (e: Exception) {
+            e.stackTrace
+        }
     }
 
     private fun observeForecastData() {
@@ -92,12 +104,13 @@ class HomeFragment : Fragment() {
     }
 
     private fun onLoading() {
-        binding.loadingBar.visibility = View.VISIBLE
+        binding.coordinatorLayout.changeRefreshState(true)
     }
 
     private fun onSuccess(data : ForecastWeather?) {
         data?.let {
-            binding.loadingBar.visibility = View.INVISIBLE
+            binding.coordinatorLayout.changeRefreshState(false)
+            binding.scrollView.changeRefreshState(false)
 
             binding.tvCurrentTemperature.text = "${it.current?.temp_c}°"
             binding.tvDetailTemperature.text = "${it.forecast.forecastday.first().day.maxtemp_c}° / ${it.forecast.forecastday.first().day.mintemp_c}°, feels like ${it.current.feelslike_c}°"
@@ -131,14 +144,19 @@ class HomeFragment : Fragment() {
     }
 
     private fun onFailure() {
-        binding.loadingBar.visibility = View.INVISIBLE
+        binding.coordinatorLayout.changeRefreshState(false)
+        binding.scrollView.changeRefreshState(false)
     }
 
-    private fun initRecyclerViews() {
+    private fun initViews() {
         binding.rwHours.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rwHours.adapter = hourlyListAdapter
         binding.rwDays.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
         binding.rwDays.adapter = dayListAdapter
+
+        binding.lottieLoading.alpha = 0f
+        binding.coordinatorLayout.setValues(binding.lottieLoading, binding.appbar, ::refresh)
+        binding.scrollView.setValues(binding.lottieLoading, binding.appbar, ::refresh)
     }
 
     private fun appBarObserver() {
@@ -174,7 +192,6 @@ class HomeFragment : Fragment() {
         with(current) {
             AdapterAnimation.animateBackgroundColor(binding.homeFragment, currentPalette.primary, nextPalette.primary)
             AdapterAnimation.animateBackgroundColor(binding.layoutToolbar, currentPalette.primary, nextPalette.primary)
-            AdapterAnimation.animateImageViewTintColorChange(binding.imgSettings, currentPalette.onPrimary, nextPalette.onPrimary)
 
             //Cards
             AdapterAnimation.animateCardViewBackgroundColor(binding.cardHourlyList, currentPalette.secondary, nextPalette.secondary)

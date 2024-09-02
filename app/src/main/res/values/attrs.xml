@@ -7,4 +7,14 @@
         <attr name="startAndEndPadding" format="dimension" />
         <attr name="topAndBottomPadding" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="CoordinatorLayoutWithRefresh">
+        <attr name="coordinatorMaxTranslationY" format="dimension"/>
+        <attr name="coordinatorRefreshToleration" format="dimension"/>
+        <attr name="coordinatorDuration" format="integer"/>
+    </declare-styleable>
+    <declare-styleable name="NestedScrollWithRefresh">
+        <attr name="nestedScrollMaxTranslationY" format="dimension"/>
+        <attr name="nestedScrollRefreshToleration" format="dimension"/>
+        <attr name="nestedScrollDuration" format="integer"/>
+    </declare-styleable>
 </resources>

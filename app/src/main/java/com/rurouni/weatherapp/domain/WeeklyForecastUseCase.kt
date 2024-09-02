@@ -26,6 +26,10 @@ class WeeklyForecastUseCase @Inject constructor(
         forecastFlow.collect { result ->
             if (result is NetWorkResult.Success) {
                 currentForecast = result.data
+            }else if(result is NetWorkResult.Loading) {
+                emit(NetWorkResult.Loading<ForecastWeather>(true))
+            }else {
+                emit(NetWorkResult.Error<ForecastWeather>(result.data, "Error!"))
             }
         }
 
