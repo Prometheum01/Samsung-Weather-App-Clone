@@ -7,7 +7,6 @@
 
     <TextView
         android:id="@+id/tv_day"
-        android:text="Today"
         android:textSize="@dimen/_14sdp"
         android:textColor="@color/onPrimaryMain"
         android:fontFamily="@font/sarabun_semibold"
@@ -35,7 +34,6 @@
 
             <TextView
                 android:id="@+id/tv_rain_percentage"
-                android:text="%75"
                 android:layout_gravity="center"
                 android:textSize="@dimen/_10sdp"
                 android:textColor="@color/onSecondaryMain"
@@ -49,8 +47,6 @@
             android:layout_marginHorizontal="@dimen/_12sdp"
             android:id="@+id/img_condition"
             android:layout_gravity="center"
-            app:tint="@color/onPrimaryMain"
-            android:src="@drawable/ic_1000"
             android:layout_width="@dimen/_14sdp"
             android:layout_height="@dimen/_14sdp"/>
 
@@ -64,13 +60,11 @@
                 android:textColor="@color/onPrimaryMain"
                 android:fontFamily="@font/sarabun_semibold"
                 android:gravity="end"
-                android:text="33°"
                 android:layout_marginEnd="@dimen/_4sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:text="16°"
                 android:id="@+id/tv_low_temperature"
                 android:textSize="@dimen/_14sdp"
                 android:textColor="@color/onPrimaryMain"

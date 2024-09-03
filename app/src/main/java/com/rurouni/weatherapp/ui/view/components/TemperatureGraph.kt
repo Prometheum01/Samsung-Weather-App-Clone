@@ -123,7 +123,7 @@ class TemperatureGraph @JvmOverloads constructor(
         }
     }
 
-    fun animateCircleColorChange(startColor: Int, endColor: Int, duration: Long) {
+    fun animateCircleColorChange(startColor: Int, endColor: Int, duration: Long) : ValueAnimator {
         val colorAnimator = ValueAnimator.ofArgb(startColor, endColor).apply {
             this.duration = duration
             addUpdateListener { animator ->
@@ -132,6 +132,7 @@ class TemperatureGraph @JvmOverloads constructor(
             }
             start()
         }
+        return colorAnimator
     }
 
     fun setCircleColor(color: Int,) {

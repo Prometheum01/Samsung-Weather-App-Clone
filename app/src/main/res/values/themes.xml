@@ -13,6 +13,7 @@
     <color name="onPrimarySystem">#252424</color>
     <color name="secondarySystem">#FFFFFF</color>
     <color name="onSecondarySystem">#C7C7CC</color>
+    <color name="dropColor">#97CCFB</color>
 
     <style name="Theme.WeatherApp" parent="Base.Theme.WeatherApp" />
 </resources>

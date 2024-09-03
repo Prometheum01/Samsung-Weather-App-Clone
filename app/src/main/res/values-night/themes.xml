@@ -12,4 +12,5 @@
     <color name="onPrimarySystem">#f9faf8</color>
     <color name="secondarySystem">#262424</color>
     <color name="onSecondarySystem">#DCD9DC</color>
+    <color name="dropColor">#f9faf8</color>
 </resources>

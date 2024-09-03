@@ -10,6 +10,5 @@ class WeatherApplication : Application()
 //Lottie animasyonlari ekle
 
 //Ui duzenle:
-    //expanded ve collapse modda textler uzuyor, ayrica collapse modda image kuculuyor
     //Gunluk listede bazen duzen bozuluyor ona bak
     //En asagiya polen vb degerleri ekle

@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.rurouni.weatherapp.R
-import com.rurouni.weatherapp.data.source.model.Forecast
 import com.rurouni.weatherapp.databinding.DayItemBinding
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateImageViewTintColorChange
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateTextColorChange
@@ -48,18 +47,17 @@ class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
                 animateTextColorChange(binding.tvDay, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
                 animateTextColorChange(binding.tvHighTemperature, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
                 animateTextColorChange(binding.tvLowTemperature, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
-            }else{
+            }
+            else{
                 animateTextColorChange(binding.tvDay, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
                 animateTextColorChange(binding.tvHighTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
                 animateTextColorChange(binding.tvLowTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
                 animateTextColorChange(binding.tvRainPercentage, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
-                animateImageViewTintColorChange(binding.imgRainPercentage, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
-                animateImageViewTintColorChange(binding.imgCondition, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary).doOnEnd {
+                animateImageViewTintColorChange(binding.imgRainPercentage, colorState.currentPalette.dropColor, colorState.nextPalette.dropColor).doOnEnd {
                     isAnimate = false
                     setColorState(nextColorState)
                 }
             }
-
         }
 
         binding.tvDay.text = list[position].day
@@ -68,15 +66,12 @@ class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
         binding.tvRainPercentage.text = "%${list[position].rainChance}"
 
         if (list[position].rainChance <= 25) {
-            //No
             binding.imgRainPercentage.setImageResource(R.drawable.ic_no_drop)
         }
         else if(list[position].rainChance <= 75) {
-            //Half
             binding.imgRainPercentage.setImageResource(R.drawable.ic_half_drop)
         }
         else {
-            //Full
             binding.imgRainPercentage.setImageResource(R.drawable.ic_full_drop)
         }
 
@@ -100,8 +95,7 @@ class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
                 binding.tvHighTemperature.setTextColor(colorState.currentPalette.onPrimary)
                 binding.tvLowTemperature.setTextColor(colorState.currentPalette.onPrimary)
                 binding.tvRainPercentage.setTextColor(colorState.currentPalette.onSecondary)
-                binding.imgCondition.setColorFilter(colorState.currentPalette.onPrimary)
-                binding.imgRainPercentage.setColorFilter(colorState.currentPalette.onPrimary)
+                binding.imgRainPercentage.setColorFilter(colorState.currentPalette.dropColor)
             }
         }
     }

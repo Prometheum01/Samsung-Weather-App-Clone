@@ -62,10 +62,4 @@ object Utils {
     fun Location.toApiFormat() : String {
         return "${latitude}, ${longitude}"
     }
-
-    fun NavController.safeNavigateWithArgs(direction: NavDirections, bundle: Bundle?) {
-        currentDestination?.getAction(direction.actionId)?.run {
-            navigate(direction.actionId, bundle)
-        }
-    }
 }

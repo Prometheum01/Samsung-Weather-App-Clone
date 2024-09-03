@@ -8,13 +8,23 @@
     android:background="@color/primaryMain"
     tools:context=".ui.view.fragments.HomeFragment">
 
+    <Toolbar
+        android:id="@+id/toolbar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <com.rurouni.weatherapp.ui.view.components.CoordinatorLayoutWithRefresh
         android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:coordinatorDuration="300"
         app:coordinatorMaxTranslationY="@dimen/_100sdp"
         app:coordinatorRefreshToleration="@dimen/_15sdp"
-        android:layout_height="match_parent">
+        android:layout_height="0dp">
 
         <com.google.android.material.appbar.AppBarLayout
             android:id="@+id/appbar"
@@ -42,15 +52,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <ImageView
-                        android:id="@+id/img_current_condition"
+                    <com.airbnb.lottie.LottieAnimationView
+                        android:id="@+id/lottie_current_condition"
                         android:layout_width="@dimen/_96sdp"
                         android:layout_height="@dimen/_96sdp"
                         android:layout_marginHorizontal="@dimen/_16sdp"
                         app:layout_constraintBottom_toBottomOf="@+id/layout_general_info"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="@+id/layout_general_info"
-                        app:tint="@color/onPrimaryMain" />
+                        android:layout_centerInParent="true"
+                        app:lottie_loop="true" />
 
                     <LinearLayout
                         android:id="@+id/layout_general_info"
@@ -139,7 +150,7 @@
                         android:background="@android:color/transparent">
 
                         <LinearLayout
-                            android:layout_width="@dimen/_260sdp"
+                            android:layout_width="@dimen/_220sdp"
                             android:layout_height="wrap_content">
 
                             <TextView
@@ -184,14 +195,15 @@
 
                         </LinearLayout>
 
-                        <ImageView
-                            android:id="@+id/img_collapse_condition"
-                            android:layout_width="@dimen/_36sdp"
-                            android:layout_height="@dimen/_36sdp"
+                        <com.airbnb.lottie.LottieAnimationView
+                            android:id="@+id/lottie_collapse_condition"
+                            android:layout_width="@dimen/_64sdp"
+                            android:layout_height="@dimen/_64sdp"
                             android:layout_marginRight="@dimen/_8sdp"
                             android:layout_gravity="center"
                             android:layout_weight="1"
-                            app:tint="@color/onPrimarySystem" />
+                            android:layout_centerInParent="true"
+                            app:lottie_loop="true" />
 
                     </LinearLayout>
 
@@ -201,11 +213,8 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <com.rurouni.weatherapp.ui.view.components.NestedScrollWithRefresh
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/scrollView"
-            app:nestedScrollDuration="300"
-            app:nestedScrollMaxTranslationY="@dimen/_100sdp"
-            app:nestedScrollRefreshToleration="@dimen/_15sdp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior">
@@ -306,10 +315,9 @@
 
                             <ImageView
                                 android:id="@+id/img_uv"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_uv"
-                                app:tint="@color/onPrimaryMain" />
+                                android:layout_width="@dimen/_64sdp"
+                                android:layout_height="@dimen/_64sdp"
+                                android:src="@drawable/ic_uv" />
 
                             <TextView
                                 android:id="@+id/tv_uv_title"
@@ -358,10 +366,9 @@
 
                             <ImageView
                                 android:id="@+id/img_humidity"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_humidity"
-                                app:tint="@color/onPrimaryMain" />
+                                android:layout_width="@dimen/_64sdp"
+                                android:layout_height="@dimen/_64sdp"
+                                android:src="@drawable/ic_humidity" />
 
                             <TextView
                                 android:id="@+id/tv_humidity_title"
@@ -416,10 +423,9 @@
 
                             <ImageView
                                 android:id="@+id/img_wind"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:src="@drawable/ic_wind"
-                                app:tint="@color/onPrimaryMain" />
+                                android:layout_width="@dimen/_64sdp"
+                                android:layout_height="@dimen/_64sdp"
+                                android:src="@drawable/ic_wind" />
 
                             <TextView
                                 android:id="@+id/tv_wind_title"
@@ -476,10 +482,9 @@
 
                                 <ImageView
                                     android:id="@+id/img_sunrise"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_sunrise"
-                                    app:tint="@color/onPrimaryMain" />
+                                    android:layout_width="@dimen/_64sdp"
+                                    android:layout_height="@dimen/_64sdp"
+                                    android:src="@drawable/ic_sunrise" />
 
                                 <TextView
                                     android:id="@+id/tv_sunrise_title"
@@ -513,10 +518,9 @@
 
                                 <ImageView
                                     android:id="@+id/img_sunset"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:src="@drawable/ic_sunset"
-                                    app:tint="@color/onPrimaryMain" />
+                                    android:layout_width="@dimen/_64sdp"
+                                    android:layout_height="@dimen/_64sdp"
+                                    android:src="@drawable/ic_sunset" />
 
                                 <TextView
                                     android:id="@+id/tv_sunset_title"
@@ -548,7 +552,7 @@
 
             </LinearLayout>
 
-        </com.rurouni.weatherapp.ui.view.components.NestedScrollWithRefresh>
+        </androidx.core.widget.NestedScrollView>
 
     </com.rurouni.weatherapp.ui.view.components.CoordinatorLayoutWithRefresh>
 

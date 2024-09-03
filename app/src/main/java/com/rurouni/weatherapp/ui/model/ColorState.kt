@@ -19,7 +19,8 @@ data class ColorPalette(
     val primary: Int,
     val onPrimary: Int,
     val secondary: Int,
-    val onSecondary: Int
+    val onSecondary: Int,
+    val dropColor: Int
 ){
     companion object {
 
@@ -28,8 +29,9 @@ data class ColorPalette(
             val onPrimary = Utils.getColor(context, R.color.onPrimaryMain)
             val secondary = Utils.getColor(context, R.color.secondaryMain)
             val onSecondary = Utils.getColor(context, R.color.onSecondaryMain)
+            val dropColor = Utils.getColor(context, R.color.onPrimaryMain)
 
-            return ColorPalette(primary, onPrimary, secondary, onSecondary)
+            return ColorPalette(primary, onPrimary, secondary, onSecondary, dropColor)
         }
 
         fun systemPalette(context: Context) : ColorPalette {
@@ -37,8 +39,9 @@ data class ColorPalette(
             val onPrimary = Utils.getColor(context, R.color.onPrimarySystem)
             val secondary = Utils.getColor(context, R.color.secondarySystem)
             val onSecondary = Utils.getColor(context, R.color.onSecondarySystem)
+            val dropColor = Utils.getColor(context, R.color.dropColor)
 
-            return ColorPalette(primary, onPrimary, secondary, onSecondary)
+            return ColorPalette(primary, onPrimary, secondary, onSecondary, dropColor)
         }
     }
 }

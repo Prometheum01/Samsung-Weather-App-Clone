@@ -10,6 +10,7 @@ import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.appbar.AppBarLayout
 import com.rurouni.weatherapp.data.source.model.ForecastWeather
+import com.rurouni.weatherapp.data.source.model.toLottie
 import com.rurouni.weatherapp.databinding.FragmentHomeBinding
 import com.rurouni.weatherapp.service.location.LocationPreferences
 import com.rurouni.weatherapp.ui.adapter.AdapterAnimation
@@ -29,14 +30,13 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
     @Inject lateinit var locationPreferences : LocationPreferences
-
     private val homeViewModel: HomeViewModel by activityViewModels()
 
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
 
     val hourlyListAdapter: HourlyListAdapter by lazy {
-        HourlyListAdapter(binding.rwHours)
+        HourlyListAdapter()
     }
     val dayListAdapter: DayListAdapter by lazy {
         DayListAdapter()
@@ -44,6 +44,7 @@ class HomeFragment : Fragment() {
 
     private lateinit var mainState : ColorState
     private lateinit var systemState : ColorState
+
     private val args: HomeFragmentArgs by navArgs()
 
     override fun onCreateView(
@@ -110,7 +111,12 @@ class HomeFragment : Fragment() {
     private fun onSuccess(data : ForecastWeather?) {
         data?.let {
             binding.coordinatorLayout.changeRefreshState(false)
-            binding.scrollView.changeRefreshState(false)
+
+            binding.lottieCurrentCondition.setAnimation(it.current.toLottie())
+            binding.lottieCurrentCondition.playAnimation()
+
+            binding.lottieCollapseCondition.setAnimation(it.current.toLottie())
+            binding.lottieCollapseCondition.playAnimation()
 
             binding.tvCurrentTemperature.text = "${it.current?.temp_c}°"
             binding.tvDetailTemperature.text = "${it.forecast.forecastday.first().day.maxtemp_c}° / ${it.forecast.forecastday.first().day.mintemp_c}°, feels like ${it.current.feelslike_c}°"
@@ -127,12 +133,6 @@ class HomeFragment : Fragment() {
             binding.tvSunriseValue.text = it.forecast.forecastday.first().astro.sunrise
             binding.tvSunsetValue.text = it.forecast.forecastday.first().astro.sunset
 
-            val code = Utils.codeToIconId(requireContext(), it.current.condition.code)
-            code?.let {
-                binding.imgCurrentCondition.setImageResource(it)
-                binding.imgCollapseCondition.setImageResource(it)
-            }
-
             val hourlyItemList = ListConverters.forecastToHourlyItem(it.location, it.forecast)
             hourlyListAdapter.setList(hourlyItemList)
             hourlyListAdapter.setColorState(mainState)
@@ -145,7 +145,6 @@ class HomeFragment : Fragment() {
 
     private fun onFailure() {
         binding.coordinatorLayout.changeRefreshState(false)
-        binding.scrollView.changeRefreshState(false)
     }
 
     private fun initViews() {
@@ -156,7 +155,6 @@ class HomeFragment : Fragment() {
 
         binding.lottieLoading.alpha = 0f
         binding.coordinatorLayout.setValues(binding.lottieLoading, binding.appbar, ::refresh)
-        binding.scrollView.setValues(binding.lottieLoading, binding.appbar, ::refresh)
     }
 
     private fun appBarObserver() {
@@ -202,11 +200,11 @@ class HomeFragment : Fragment() {
             AdapterAnimation.animateCardViewBackgroundColor(binding.cardSuntime, currentPalette.secondary, nextPalette.secondary)
 
             //Card Values
-            AdapterAnimation.animateImageViewTintColorChange(binding.imgUv, currentPalette.onPrimary, nextPalette.onPrimary)
-            AdapterAnimation.animateImageViewTintColorChange(binding.imgHumidity, currentPalette.onPrimary, nextPalette.onPrimary)
-            AdapterAnimation.animateImageViewTintColorChange(binding.imgWind, currentPalette.onPrimary, nextPalette.onPrimary)
-            AdapterAnimation.animateImageViewTintColorChange(binding.imgSunrise, currentPalette.onPrimary, nextPalette.onPrimary)
-            AdapterAnimation.animateImageViewTintColorChange(binding.imgSunset, currentPalette.onPrimary, nextPalette.onPrimary)
+//            AdapterAnimation.animateImageViewTintColorChange(binding.imgUv, currentPalette.onPrimary, nextPalette.onPrimary)
+//            AdapterAnimation.animateImageViewTintColorChange(binding.imgHumidity, currentPalette.onPrimary, nextPalette.onPrimary)
+//            AdapterAnimation.animateImageViewTintColorChange(binding.imgWind, currentPalette.onPrimary, nextPalette.onPrimary)
+//            AdapterAnimation.animateImageViewTintColorChange(binding.imgSunrise, currentPalette.onPrimary, nextPalette.onPrimary)
+//            AdapterAnimation.animateImageViewTintColorChange(binding.imgSunset, currentPalette.onPrimary, nextPalette.onPrimary)
 
             AdapterAnimation.animateTextColorChange(binding.tvUvTitle, currentPalette.onPrimary, nextPalette.onPrimary)
             AdapterAnimation.animateTextColorChange(binding.tvUvValue, currentPalette.onSecondary, nextPalette.onSecondary)
