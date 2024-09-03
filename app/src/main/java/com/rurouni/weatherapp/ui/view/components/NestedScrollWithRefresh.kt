@@ -10,6 +10,8 @@ import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.appbar.AppBarLayout
 import com.rurouni.weatherapp.R
 
+//Not in usage right now
+
 class NestedScrollWithRefresh @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

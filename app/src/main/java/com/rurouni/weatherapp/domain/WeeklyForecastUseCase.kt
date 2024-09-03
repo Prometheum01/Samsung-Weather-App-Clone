@@ -1,7 +1,6 @@
 package com.rurouni.weatherapp.domain
 
 import com.rurouni.weatherapp.data.repository.WeatherRepository
-import com.rurouni.weatherapp.data.source.local.data_sources.WeatherLocalDataSource
 import com.rurouni.weatherapp.data.source.model.ForecastWeather
 import com.rurouni.weatherapp.data.source.model.Forecastday
 import com.rurouni.weatherapp.data.source.model.HistoryWeather
@@ -11,6 +10,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
+
+//This use case take the yesterday's forecast, and 7 days forecast. Then migrate them
 class WeeklyForecastUseCase @Inject constructor(
     private val weatherRepository: WeatherRepository,
 ) {
@@ -27,9 +28,9 @@ class WeeklyForecastUseCase @Inject constructor(
             if (result is NetWorkResult.Success) {
                 currentForecast = result.data
             }else if(result is NetWorkResult.Loading) {
-                emit(NetWorkResult.Loading<ForecastWeather>(true))
+                emit(NetWorkResult.Loading(true))
             }else {
-                emit(NetWorkResult.Error<ForecastWeather>(result.data, "Error!"))
+                emit(NetWorkResult.Error(result.data, "Error!"))
             }
         }
 

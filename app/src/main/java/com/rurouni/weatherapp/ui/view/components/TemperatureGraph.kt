@@ -10,6 +10,8 @@ import android.view.View
 import com.rurouni.weatherapp.R
 import com.rurouni.weatherapp.ui.model.TemperatureGraphData
 
+//This custom views used for creating temperature graph with recycle view items
+
 class TemperatureGraph @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,
@@ -139,5 +141,4 @@ class TemperatureGraph @JvmOverloads constructor(
         circlePaint.color = color
         invalidate()
     }
-
 }

@@ -2,6 +2,8 @@ package com.rurouni.weatherapp.utils
 
 import android.content.Context
 
+//This class separates api result to loading, success and error
+
 class ApiResultHandler<T>(private val context: Context, private val onLoading: () -> Unit, private val onSuccess: (T?) -> Unit, private val onFailure: (T?) -> Unit) {
 
     fun handleApiResult(result: NetWorkResult<T?>) {

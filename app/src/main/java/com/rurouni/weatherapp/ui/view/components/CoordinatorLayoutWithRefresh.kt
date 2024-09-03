@@ -10,6 +10,8 @@ import com.airbnb.lottie.LottieDrawable
 import com.google.android.material.appbar.AppBarLayout
 import com.rurouni.weatherapp.R
 
+//This custom view used to add pull to refresh functionality in coordinator layout
+
 class CoordinatorLayoutWithRefresh @JvmOverloads constructor(
     context: Context,
     attrs: AttributeSet? = null,

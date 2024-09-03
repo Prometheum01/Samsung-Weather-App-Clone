@@ -4,6 +4,8 @@ import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
 
+//This class transform and get system date
+
 object DateOps {
 
     fun getSystemDate(count : Int = 0) : String {

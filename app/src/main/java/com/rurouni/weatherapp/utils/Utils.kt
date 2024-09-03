@@ -5,14 +5,11 @@ import android.content.Context
 import android.location.Location
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
-import android.os.Bundle
 import androidx.core.content.ContextCompat
-import androidx.navigation.NavController
-import androidx.navigation.NavDirections
 import com.rurouni.weatherapp.R
 
 object Utils {
-
+    //This function checks internet connection
     fun hasInternetConnection(context: Context?): Boolean {
         try {
             if (context == null)
@@ -32,6 +29,7 @@ object Utils {
         }
     }
 
+    //This function shows alert dialog
     fun showAlertDialog(context: Context,message:String){
         try {
             val builder = AlertDialog.Builder(context)
@@ -49,16 +47,19 @@ object Utils {
         }
     }
 
+    //This function convert code to custom icon resource id
     fun codeToIconId(context: Context, code: Int): Int? {
         val resourceName = "ic_$code"
         val resourceId = context.resources.getIdentifier(resourceName, "drawable", context.packageName)
         return if (resourceId != 0) resourceId else null
     }
 
+    //This function gets the color from resource id
     fun getColor(context: Context, colorResId: Int): Int {
         return ContextCompat.getColor(context, colorResId)
     }
 
+    //This function transform from location to api format
     fun Location.toApiFormat() : String {
         return "${latitude}, ${longitude}"
     }

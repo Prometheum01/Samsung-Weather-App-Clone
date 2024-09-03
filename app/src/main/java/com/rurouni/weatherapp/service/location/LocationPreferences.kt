@@ -6,6 +6,8 @@ import android.location.Location
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
+//Saves the last location data by shared preferences
+
 class LocationPreferences @Inject constructor (@ApplicationContext private val context: Context) {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("LocationPrefs", Context.MODE_PRIVATE)

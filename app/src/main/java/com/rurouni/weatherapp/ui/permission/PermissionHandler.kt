@@ -5,7 +5,6 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.rurouni.weatherapp.ui.view.components.Messages
 
 class PermissionHandler(private val activity: AppCompatActivity) {
 

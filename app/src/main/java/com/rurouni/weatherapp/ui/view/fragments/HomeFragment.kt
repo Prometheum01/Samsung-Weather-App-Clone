@@ -13,27 +13,30 @@ import com.rurouni.weatherapp.data.source.model.ForecastWeather
 import com.rurouni.weatherapp.data.source.model.toLottie
 import com.rurouni.weatherapp.databinding.FragmentHomeBinding
 import com.rurouni.weatherapp.service.location.LocationPreferences
-import com.rurouni.weatherapp.ui.adapter.AdapterAnimation
 import com.rurouni.weatherapp.ui.adapter.DayListAdapter
 import com.rurouni.weatherapp.ui.adapter.HourlyListAdapter
+import com.rurouni.weatherapp.ui.animation.CustomAnimation.animateBackgroundColor
+import com.rurouni.weatherapp.ui.animation.CustomAnimation.animateCardViewBackgroundColor
+import com.rurouni.weatherapp.ui.animation.CustomAnimation.animateTextColorChange
 import com.rurouni.weatherapp.ui.model.ColorPalette
 import com.rurouni.weatherapp.ui.model.ColorState
 import com.rurouni.weatherapp.ui.model.ColorTheme
 import com.rurouni.weatherapp.ui.view_model.HomeViewModel
 import com.rurouni.weatherapp.utils.ApiResultHandler
 import com.rurouni.weatherapp.utils.ListConverters
-import com.rurouni.weatherapp.utils.Utils
 import com.rurouni.weatherapp.utils.Utils.toApiFormat
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment() {
-    @Inject lateinit var locationPreferences : LocationPreferences
-    private val homeViewModel: HomeViewModel by activityViewModels()
-
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var mainState : ColorState
+    private lateinit var systemState : ColorState
+
+    private val args: HomeFragmentArgs by navArgs()
 
     val hourlyListAdapter: HourlyListAdapter by lazy {
         HourlyListAdapter()
@@ -42,10 +45,8 @@ class HomeFragment : Fragment() {
         DayListAdapter()
     }
 
-    private lateinit var mainState : ColorState
-    private lateinit var systemState : ColorState
-
-    private val args: HomeFragmentArgs by navArgs()
+    @Inject lateinit var locationPreferences : LocationPreferences
+    private val homeViewModel: HomeViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -74,6 +75,7 @@ class HomeFragment : Fragment() {
         onSuccess(cachedData)
     }
 
+    //This function get latest forecast data
     private fun refresh() {
         try {
             locationPreferences.getSavedLocation()?.let {
@@ -84,6 +86,7 @@ class HomeFragment : Fragment() {
         }
     }
 
+    //This function observe forecast data from home view model
     private fun observeForecastData() {
         try {
             homeViewModel.currentForecast.observe(requireActivity()) { response ->
@@ -157,6 +160,7 @@ class HomeFragment : Fragment() {
         binding.coordinatorLayout.setValues(binding.lottieLoading, binding.appbar, ::refresh)
     }
 
+    //This function listens collapsing app bar
     private fun appBarObserver() {
         val appBarLayout = binding.appbar
         val expandedContent = binding.layoutExpand
@@ -186,43 +190,35 @@ class HomeFragment : Fragment() {
         })
     }
 
+    //This function change color palette
     private fun changePalette(current: ColorState, next : ColorState) {
         with(current) {
-            AdapterAnimation.animateBackgroundColor(binding.homeFragment, currentPalette.primary, nextPalette.primary)
-            AdapterAnimation.animateBackgroundColor(binding.layoutToolbar, currentPalette.primary, nextPalette.primary)
+            animateBackgroundColor(binding.homeFragment, currentPalette.primary, nextPalette.primary)
+            animateBackgroundColor(binding.layoutToolbar, currentPalette.primary, nextPalette.primary)
 
-            //Cards
-            AdapterAnimation.animateCardViewBackgroundColor(binding.cardHourlyList, currentPalette.secondary, nextPalette.secondary)
-            AdapterAnimation.animateCardViewBackgroundColor(binding.cardDaysList, currentPalette.secondary, nextPalette.secondary)
-            AdapterAnimation.animateCardViewBackgroundColor(binding.cardUv, currentPalette.secondary, nextPalette.secondary)
-            AdapterAnimation.animateCardViewBackgroundColor(binding.cardHumidity, currentPalette.secondary, nextPalette.secondary)
-            AdapterAnimation.animateCardViewBackgroundColor(binding.cardWind, currentPalette.secondary, nextPalette.secondary)
-            AdapterAnimation.animateCardViewBackgroundColor(binding.cardSuntime, currentPalette.secondary, nextPalette.secondary)
+            animateCardViewBackgroundColor(binding.cardHourlyList, currentPalette.secondary, nextPalette.secondary)
+            animateCardViewBackgroundColor(binding.cardDaysList, currentPalette.secondary, nextPalette.secondary)
+            animateCardViewBackgroundColor(binding.cardUv, currentPalette.secondary, nextPalette.secondary)
+            animateCardViewBackgroundColor(binding.cardHumidity, currentPalette.secondary, nextPalette.secondary)
+            animateCardViewBackgroundColor(binding.cardWind, currentPalette.secondary, nextPalette.secondary)
+            animateCardViewBackgroundColor(binding.cardSuntime, currentPalette.secondary, nextPalette.secondary)
 
-            //Card Values
-//            AdapterAnimation.animateImageViewTintColorChange(binding.imgUv, currentPalette.onPrimary, nextPalette.onPrimary)
-//            AdapterAnimation.animateImageViewTintColorChange(binding.imgHumidity, currentPalette.onPrimary, nextPalette.onPrimary)
-//            AdapterAnimation.animateImageViewTintColorChange(binding.imgWind, currentPalette.onPrimary, nextPalette.onPrimary)
-//            AdapterAnimation.animateImageViewTintColorChange(binding.imgSunrise, currentPalette.onPrimary, nextPalette.onPrimary)
-//            AdapterAnimation.animateImageViewTintColorChange(binding.imgSunset, currentPalette.onPrimary, nextPalette.onPrimary)
+            animateTextColorChange(binding.tvUvTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            animateTextColorChange(binding.tvUvValue, currentPalette.onSecondary, nextPalette.onSecondary)
 
-            AdapterAnimation.animateTextColorChange(binding.tvUvTitle, currentPalette.onPrimary, nextPalette.onPrimary)
-            AdapterAnimation.animateTextColorChange(binding.tvUvValue, currentPalette.onSecondary, nextPalette.onSecondary)
+            animateTextColorChange(binding.tvHumidityTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            animateTextColorChange(binding.tvHumidityValue, currentPalette.onSecondary, nextPalette.onSecondary)
 
-            AdapterAnimation.animateTextColorChange(binding.tvHumidityTitle, currentPalette.onPrimary, nextPalette.onPrimary)
-            AdapterAnimation.animateTextColorChange(binding.tvHumidityValue, currentPalette.onSecondary, nextPalette.onSecondary)
+            animateTextColorChange(binding.tvWindTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            animateTextColorChange(binding.tvWindValue, currentPalette.onSecondary, nextPalette.onSecondary)
 
-            AdapterAnimation.animateTextColorChange(binding.tvWindTitle, currentPalette.onPrimary, nextPalette.onPrimary)
-            AdapterAnimation.animateTextColorChange(binding.tvWindValue, currentPalette.onSecondary, nextPalette.onSecondary)
+            animateTextColorChange(binding.tvSunriseTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            animateTextColorChange(binding.tvSunriseValue, currentPalette.onSecondary, nextPalette.onSecondary)
 
-            AdapterAnimation.animateTextColorChange(binding.tvSunriseTitle, currentPalette.onPrimary, nextPalette.onPrimary)
-            AdapterAnimation.animateTextColorChange(binding.tvSunriseValue, currentPalette.onSecondary, nextPalette.onSecondary)
+            animateTextColorChange(binding.tvSunsetTitle, currentPalette.onPrimary, nextPalette.onPrimary)
+            animateTextColorChange(binding.tvSunsetValue, currentPalette.onSecondary, nextPalette.onSecondary)
 
-            AdapterAnimation.animateTextColorChange(binding.tvSunsetTitle, currentPalette.onPrimary, nextPalette.onPrimary)
-            AdapterAnimation.animateTextColorChange(binding.tvSunsetValue, currentPalette.onSecondary, nextPalette.onSecondary)
-
-            AdapterAnimation.animateTextColorChange(binding.tvHourly, currentPalette.onPrimary, nextPalette.onPrimary)
-
+            animateTextColorChange(binding.tvHourly, currentPalette.onPrimary, nextPalette.onPrimary)
         }
         with(next) {
             hourlyListAdapter.animate(next)

@@ -1,4 +1,4 @@
-package com.rurouni.weatherapp.ui.adapter
+package com.rurouni.weatherapp.ui.animation
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 
-object AdapterAnimation {
+object CustomAnimation {
     val duration = 500L
 
     fun animateTextColorChange(textView: TextView, fromColor: Int, toColor: Int) : ObjectAnimator {

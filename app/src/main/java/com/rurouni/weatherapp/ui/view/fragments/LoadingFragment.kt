@@ -18,7 +18,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoadingFragment : Fragment() {
-    //Binding
     private var _binding: FragmentLoadingBinding? = null
     private val binding get() = _binding!!
 
@@ -41,12 +40,14 @@ class LoadingFragment : Fragment() {
         loadingViewModel.checkHasSavedData()
     }
 
+    //This  function observe loading view model saved data and navigate home with this data
     private fun observeSavedData() {
         loadingViewModel.savedData.observe(viewLifecycleOwner) {
             navigateHome(it)
         }
     }
 
+    //This  function navigate home fragment with forecastWeather data
     private fun navigateHome(forecastWeather: ForecastWeather) {
         if (findNavController().currentDestination?.label != "fragment_home") {
             val action = LoadingFragmentDirections.actionLoadingFragmentToHomeFragment(forecastWeather)
@@ -54,6 +55,7 @@ class LoadingFragment : Fragment() {
         }
     }
 
+    //This  function observe forecast data from home view model and navigate home with this data
     private fun observeForecastData() {
         try {
             homeViewModel.currentForecast.observe(requireActivity()) { response ->

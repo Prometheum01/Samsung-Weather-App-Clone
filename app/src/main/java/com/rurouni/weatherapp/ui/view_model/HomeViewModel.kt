@@ -19,8 +19,6 @@ class HomeViewModel @Inject constructor(private val weeklyForecastUseCase: Weekl
 
     fun getForecast(location : String) = viewModelScope.launch {
         weeklyForecastUseCase(location, "en", 3).collect { result ->
-            println("TestSpecial: ${result.status}, ${result.data?.current?.humidity}")
-
             _currentForecast.postValue(result)
 
             result.data?.let {

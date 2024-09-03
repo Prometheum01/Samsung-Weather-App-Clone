@@ -7,6 +7,8 @@ import com.rurouni.weatherapp.data.source.model.getTime
 import com.rurouni.weatherapp.ui.model.ForecastDayItem
 import com.rurouni.weatherapp.ui.model.HourlyItem
 
+//This class transform api data to recycler view item data
+
 object ListConverters {
 
     private fun indexToDayLabel(index : Int, forecastDay: Forecastday) : String {
@@ -78,7 +80,4 @@ object ListConverters {
 
         return list
     }
-
-
-
 }

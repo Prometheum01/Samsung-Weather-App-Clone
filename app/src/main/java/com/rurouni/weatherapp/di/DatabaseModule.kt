@@ -24,5 +24,4 @@ object DatabaseModule {
     fun provideWeatherDao(db: WeatherDatabase) : WeatherDao {
         return db.weatherDao()
     }
-
 }

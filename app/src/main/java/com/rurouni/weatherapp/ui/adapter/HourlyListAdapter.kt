@@ -6,8 +6,9 @@ import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.rurouni.weatherapp.R
 import com.rurouni.weatherapp.databinding.HourlyItemBinding
-import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateImageViewTintColorChange
-import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateTextColorChange
+import com.rurouni.weatherapp.ui.animation.CustomAnimation
+import com.rurouni.weatherapp.ui.animation.CustomAnimation.animateImageViewTintColorChange
+import com.rurouni.weatherapp.ui.animation.CustomAnimation.animateTextColorChange
 import com.rurouni.weatherapp.ui.model.ColorState
 import com.rurouni.weatherapp.ui.model.HourlyItem
 import com.rurouni.weatherapp.ui.model.TemperatureGraphData
@@ -37,12 +38,13 @@ class HourlyListAdapter() : RecyclerView.Adapter<HourlyListAdapter.ViewHolder>()
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val binding = holder.binding
 
+        //This function starts the animation of the list elements if they are in animation mode.
         if (isAnimate) {
             animateTextColorChange(binding.tvHour, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
             animateTextColorChange(binding.tvTemperature, colorState.currentPalette.onPrimary, colorState.nextPalette.onPrimary)
             animateTextColorChange(binding.tvRainPercentage, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
             animateImageViewTintColorChange(binding.imgRainPercentage, colorState.currentPalette.dropColor, colorState.nextPalette.dropColor)
-            binding.graphTemperature.animateCircleColorChange(colorState.currentPalette.dropColor, colorState.nextPalette.dropColor, AdapterAnimation.duration).doOnEnd {
+            binding.graphTemperature.animateCircleColorChange(colorState.currentPalette.dropColor, colorState.nextPalette.dropColor, CustomAnimation.duration).doOnEnd {
                 isAnimate = false
                 setColorState(nextColorState)
             }
@@ -55,6 +57,7 @@ class HourlyListAdapter() : RecyclerView.Adapter<HourlyListAdapter.ViewHolder>()
         val min = list.minOfOrNull { it.temperature }
         val max = list.maxOfOrNull { it.temperature }
 
+        //This condition creates temperature graph except first one's left side and last one's right side
         if (position == 0) {
             val firstData = TemperatureGraphData(min!!, max!!, 0f, list[position].temperature, list[position + 1].temperature)
             holder.binding.graphTemperature.setValues(firstData)
@@ -89,6 +92,7 @@ class HourlyListAdapter() : RecyclerView.Adapter<HourlyListAdapter.ViewHolder>()
             }
         }
 
+        //This function sets color of the list elements if they are not in animation mode.
         if (!isAnimate) {
             binding.tvHour.setTextColor(colorState.currentPalette.onPrimary)
             binding.tvTemperature.setTextColor(colorState.currentPalette.onPrimary)

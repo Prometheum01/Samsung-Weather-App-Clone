@@ -28,13 +28,12 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
-    @Inject
-    lateinit var locationPreferences: LocationPreferences
-
-    private lateinit var permissionHandler: PermissionHandler
+    @Inject lateinit var locationPreferences: LocationPreferences
 
     private val locationViewModel: LocationViewModel by viewModels()
     private val homeViewModel: HomeViewModel by viewModels()
+
+    private lateinit var permissionHandler: PermissionHandler
 
     private val requestPermissionLauncher =
         registerForActivityResult(
@@ -58,6 +57,7 @@ class MainActivity : AppCompatActivity() {
         observeLocationAndForecast()
     }
 
+    //This functions checks the location permission
     private fun checkPermission() {
         permissionHandler = PermissionHandler(this)
 
@@ -75,6 +75,7 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    //This functions observe the location data from location view model and if it get any data then call getForecast function
     private fun observeLocationAndForecast() {
         try {
             locationViewModel.currentLocation.observe(this) { location ->
@@ -85,6 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //This functions get forecast data from home view model
     private fun getForecast(location: String) {
         try {
             homeViewModel.getForecast(location)
@@ -93,6 +95,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    //This function gets the result of open location dialog
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == locationViewModel.REQUEST_CHECK_SETTINGS && resultCode == Activity.RESULT_OK) {
@@ -118,6 +121,7 @@ class MainActivity : AppCompatActivity() {
         locationViewModel.stopLocationUpdates()
     }
 
+    //This function sets transparent status bar
     private fun setStatusBarTheme() {
         window.apply {
             decorView.systemUiVisibility =

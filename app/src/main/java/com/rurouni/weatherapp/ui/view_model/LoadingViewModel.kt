@@ -15,7 +15,6 @@ class LoadingViewModel @Inject constructor(private val weatherRepository: Weathe
     private val _savedData : MutableLiveData<ForecastWeather> = MutableLiveData()
     val savedData : LiveData<ForecastWeather> = _savedData
 
-
     fun checkHasSavedData() {
         viewModelScope.launch {
             val response = weatherRepository.getLocalForecast()

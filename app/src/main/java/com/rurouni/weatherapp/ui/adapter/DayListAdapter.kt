@@ -7,8 +7,8 @@ import androidx.core.animation.doOnEnd
 import androidx.recyclerview.widget.RecyclerView
 import com.rurouni.weatherapp.R
 import com.rurouni.weatherapp.databinding.DayItemBinding
-import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateImageViewTintColorChange
-import com.rurouni.weatherapp.ui.adapter.AdapterAnimation.animateTextColorChange
+import com.rurouni.weatherapp.ui.animation.CustomAnimation.animateImageViewTintColorChange
+import com.rurouni.weatherapp.ui.animation.CustomAnimation.animateTextColorChange
 import com.rurouni.weatherapp.ui.model.ColorState
 import com.rurouni.weatherapp.ui.model.ForecastDayItem
 import com.rurouni.weatherapp.utils.Utils.codeToIconId
@@ -36,12 +36,14 @@ class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val binding = holder.binding
 
+        //This function hides this fields in first position
         if (position == 0) {
             binding.imgRainPercentage.visibility = View.GONE
             binding.tvRainPercentage.visibility = View.GONE
             binding.imgCondition.visibility = View.GONE
         }
 
+        //This function starts the animation of the list elements if they are in animation mode.
         if (isAnimate) {
             if (position == 0) {
                 animateTextColorChange(binding.tvDay, colorState.currentPalette.onSecondary, colorState.nextPalette.onSecondary)
@@ -85,6 +87,7 @@ class DayListAdapter : RecyclerView.Adapter<DayListAdapter.ViewHolder>() {
             }
         }
 
+        //This function sets color of the list elements if they are not in animation mode.
         if (!isAnimate) {
             if (position == 0) {
                 binding.tvDay.setTextColor(colorState.currentPalette.onSecondary)

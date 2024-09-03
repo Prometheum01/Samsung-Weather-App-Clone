@@ -85,9 +85,6 @@ class Converters {
         return gson.fromJson(data, Hour::class.java)
     }
 
-
-
-
     @TypeConverter
     fun fromLocation(location: Location): String {
         return gson.toJson(location)
@@ -97,6 +94,4 @@ class Converters {
     fun toLocation(data: String): Location {
         return gson.fromJson(data, Location::class.java)
     }
-
-
 }
