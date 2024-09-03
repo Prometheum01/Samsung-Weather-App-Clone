@@ -1,6 +1,6 @@
 # Samsung Weather App Clone
 
-This app is for getting forecast data from weatherapi.com. Also, this app is cloned from Samsung's weather app :)
+This app is for getting forecast data from [weatherapi.com](https://www.weatherapi.com/). Also, this app is cloned from Samsung's weather app :)
 
 ## Features
 
