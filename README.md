@@ -2,6 +2,14 @@
 
 This app is for getting forecast data from [weatherapi.com](https://www.weatherapi.com/). Also, this app is cloned from Samsung's weather app :)
 
+![Boruto GIF](https://media.giphy.com/media/SdBG6AkBwIFOLwPPsS/giphy.gif)
+
+## Demo
+
+Watch the demo of the app on YouTube:
+
+[Watch the video](https://youtube.com/shorts/IjtH6mBQuWM)
+
 ## Features
 
 - Responsive UI
